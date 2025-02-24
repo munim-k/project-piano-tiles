@@ -6,6 +6,8 @@ public class buttonAnims : MonoBehaviour
 {
     private Vector3 originalScale;
     private Button button;
+    public GameObject objectToActivate; // GameObject to activate after animation
+    public GameObject objectToDeactivate; // GameObject to deactivate after animation
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,7 +35,17 @@ public class buttonAnims : MonoBehaviour
     {
         transform.DOScale(new Vector3(3, 3, 3), 0.1f).OnComplete(() =>
         {
-            transform.DOScale(originalScale, 0.2f);
+            transform.DOScale(originalScale, 0.1f).OnComplete(() =>
+            {
+                if (objectToActivate != null)
+                {
+                    objectToActivate.SetActive(true);
+                }
+                if (objectToDeactivate != null)
+                {
+                    objectToDeactivate.SetActive(false);
+                }
+            });
         });
     }
 }
