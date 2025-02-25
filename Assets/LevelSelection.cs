@@ -33,7 +33,7 @@ public class LevelSelection : MonoBehaviour
             }
 
             Button button = buttonObj.GetComponent<Button>();
-            int levelIndex = i;
+            
             
             // Safely get audio clip
             AudioClip clip = null;
@@ -42,11 +42,11 @@ public class LevelSelection : MonoBehaviour
                 clip = buttonClickSound[i];
             }
             
-            button.onClick.AddListener(() => LoadLevel(levelIndex, clip));
+            button.onClick.AddListener(() => LoadLevel( clip));
         }
     }
 
-    private void LoadLevel(int levelNumber , AudioClip buttonClickSound)
+    private void LoadLevel( AudioClip buttonClickSound)
     {
         if (levelMusic != null && buttonClickSound != null)
         {
@@ -54,7 +54,7 @@ public class LevelSelection : MonoBehaviour
         }
         
         // Assuming your scene names are "Level1", "Level2", etc.
-        string sceneName = $"level{levelNumber+1}";
+        string sceneName = $"level";
         SceneManager.LoadScene(sceneName);
     }
     

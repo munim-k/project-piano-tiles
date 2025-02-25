@@ -357,6 +357,34 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: -17
       objectReference: {fileID: 0}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: buttonPrefab
+      value: 
+      objectReference: {fileID: 551887627353846438, guid: 0c7c298375f23724fb24f4e25b754d39, type: 3}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: numberOfLevels
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: contentTransform
+      value: 
+      objectReference: {fileID: 1012252760}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: buttonClickSound.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: 'buttonClickSound.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: b513e31231acc80428d8b37e6bf02809, type: 3}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: 'buttonClickSound.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 4bc288909dcfe004bafb2b2682a77964, type: 3}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: 'buttonClickSound.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6b25bdcf793a2ec4b8a8940476f35dc4, type: 3}
     - target: {fileID: 3117487861696629771, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_Type
       value: 0
@@ -506,7 +534,8 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2826615460942517165, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 138385828389262016, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       insertIndex: -1
@@ -554,6 +583,11 @@ MonoBehaviour:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 297517523287785758, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
   m_PrefabInstance: {fileID: 1380789240424096807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1012252760 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5790423261497034726, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+  m_PrefabInstance: {fileID: 755531897}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1121363860
 GameObject:
