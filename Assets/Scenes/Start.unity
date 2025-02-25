@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: levelSelect
       objectReference: {fileID: 0}
+    - target: {fileID: 297517523287785758, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2119160365543487042, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: objectToActivate
       value: 
@@ -499,7 +503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7827532049110228258, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -544,8 +548,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ecff87537dde0458d0686bfc397ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToActivate: {fileID: 0}
-  objectToDeactivate: {fileID: 0}
+  objectToActivate: {fileID: 775555035}
+  objectToDeactivate: {fileID: 2123318172}
+--- !u!1 &775555035 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 297517523287785758, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
+  m_PrefabInstance: {fileID: 1380789240424096807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1121363860
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,11 +691,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1121363860}
   m_CullTransparentMesh: 1
---- !u!1 &1656324601 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7882579566341594608, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
-  m_PrefabInstance: {fileID: 1380789240424096807}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1915437455
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +783,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2123318172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 297517523287785758, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
+  m_PrefabInstance: {fileID: 88207186}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1380789240424096807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -794,11 +803,15 @@ PrefabInstance:
     - target: {fileID: 2119160365543487042, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: objectToActivate
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2123318172}
     - target: {fileID: 2119160365543487042, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: objectToDeactivate
       value: 
-      objectReference: {fileID: 1656324601}
+      objectReference: {fileID: 775555035}
+    - target: {fileID: 2648345004825105889, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
+      propertyPath: m_Transition
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3283389477661651228, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -878,6 +891,10 @@ PrefabInstance:
     - target: {fileID: 3283389477661651228, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7882579566341594608, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
