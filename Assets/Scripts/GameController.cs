@@ -47,6 +47,7 @@ public class GameController : MonoBehaviour
         GameOver = new ReactiveProperty<bool>();
         Score = new ReactiveProperty<int>();
         ShowGameOverScreen = new ReactiveProperty<bool>();
+        audioSource = GameObject.Find("levelMusic").GetComponent<AudioSource>();
     }
 
     void Start()
