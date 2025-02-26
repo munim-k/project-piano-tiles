@@ -10,7 +10,7 @@ public class levelMusic : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<levelMusic>();
+                _instance = FindAnyObjectByType<levelMusic>();
                 if (_instance == null)
                 {
                     GameObject singleton = new GameObject(typeof(levelMusic).ToString());

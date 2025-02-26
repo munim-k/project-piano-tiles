@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
@@ -84,7 +82,7 @@ public class GameController : MonoBehaviour
             // Debug.Log("GameController: Game started.");
             GameController.Instance.GameStarted.Value = true;
 
-            Init(LevelManager.Instance.songIndex);
+            // Init(LevelManager.Instance.songIndex);
             SetDataForNoteGeneration();
             InitializeBeatDetection();
             StartCoroutine(SpawnNotesOnBeat());
