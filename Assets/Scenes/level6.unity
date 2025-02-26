@@ -1822,6 +1822,8 @@ MonoBehaviour:
   noteSpeed: 5
   noteContainer: {fileID: 473242142}
   audioSource: {fileID: 0}
+  songsSO: {fileID: 0}
+  bpm: 180
 --- !u!1 &2037090371
 GameObject:
   m_ObjectHideFlags: 0
