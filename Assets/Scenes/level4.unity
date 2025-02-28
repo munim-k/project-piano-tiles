@@ -180,7 +180,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b26c9fe8568222c41bab484d6b3510b3, type: 3}
+  m_Sprite: {fileID: -4364034832326165938, guid: 34a0ae77aaa6b7e9b957fd73a511250a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -201,8 +201,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0028, y: 0.001, z: 91}
-  m_LocalScale: {x: 0.28, y: 0.3527243, z: 2.5084453}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.9021295, y: 1.5941054, z: 2.9777756}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1331,7 +1331,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Play again
+  m_Text: Home
 --- !u!222 &1005831259
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1652,8 +1652,8 @@ RectTransform:
   m_GameObject: {fileID: 1218935131}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 101411695}
   - {fileID: 2037090372}
@@ -1663,7 +1663,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000015259, y: 0.0021667}
-  m_SizeDelta: {x: 800, y: 1422.2268}
+  m_SizeDelta: {x: 533.33, y: 948.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1218935133
 MonoBehaviour:
@@ -1685,7 +1685,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2712ecb51a5a3fd42af23b681116f0d3, type: 3}
+  m_Sprite: {fileID: -4364034832326165938, guid: 34a0ae77aaa6b7e9b957fd73a511250a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1822,8 +1822,8 @@ MonoBehaviour:
   noteSpeed: 5
   noteContainer: {fileID: 473242142}
   audioSource: {fileID: 0}
-  songsSO: {fileID: 0}
-  bpm: 140
+  bpm: 80
+  seed: 0
 --- !u!1 &2037090371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1909,7 +1909,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2011994418}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: PlayAgain
+        m_MethodName: GoHome
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

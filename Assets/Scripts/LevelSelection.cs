@@ -10,11 +10,17 @@ public class LevelSelection : MonoBehaviour
     
     [SerializeField] private int numberOfLevels = 6;
     public  AudioClip[] buttonClickSound;
-    private AudioSource levelMusic;
+    private AudioSource levelMusicSource;
+
+    [SerializeField] TextMeshProUGUI levelText;
+    int currentLevel = 1;
 
     void Start()
     {
-        levelMusic = GameObject.Find("levelMusic").GetComponent<AudioSource>();
+        currentLevel = levelMusic.Instance.level + 1;
+        levelMusicSource = levelMusic.Instance.GetComponent<AudioSource>();
+        levelMusicSource.clip = buttonClickSound[currentLevel-1];
+        levelText.text = $"Level 0{currentLevel}";
         SpawnLevelButtons(numberOfLevels);
     }
 
@@ -48,13 +54,24 @@ public class LevelSelection : MonoBehaviour
     private void LoadLevel(int levelNumber , AudioClip buttonClickSound)
     {
         Debug.Log(buttonClickSound);
-        if (levelMusic != null && buttonClickSound != null)
+        if (levelMusicSource != null && buttonClickSound != null)
         {
-            levelMusic.clip = buttonClickSound;
+            levelMusicSource.clip = buttonClickSound;
         }
+
+        currentLevel = levelNumber + 1;
+
+        levelText.text = $"Level 0{currentLevel}";
+
+        levelMusic.Instance.level = levelNumber;
         
-        // Assuming your scene names are "level1", "level2", etc.
-        string sceneName = $"level{levelNumber+1}";
+        // // Assuming your scene names are "level1", "level2", etc.
+        // string sceneName = $"level{levelNumber+1}";
+        // SceneManager.LoadScene(sceneName);
+    }
+
+    public void Play() {
+        string sceneName = $"level{currentLevel}";
         SceneManager.LoadScene(sceneName);
     }
     

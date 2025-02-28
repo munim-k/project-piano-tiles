@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,7 +16,6 @@ public class GameController : MonoBehaviour
     private static float noteHeight;
     private static float noteWidth;
 
-    
     private Vector3 noteLocalScale;
     private float noteSpawnStartPosX;
     private float noteSpawnStartPosY;
@@ -29,7 +29,6 @@ public class GameController : MonoBehaviour
     public ReactiveProperty<int> Score { get; set; }
     public int LastPlayedNoteId { get; set; } = 0;
     public AudioSource audioSource;
-    private Coroutine playSongSegmentCoroutine;
     private float songSegmentLength = 0.8f;
     private bool lastNote = false;
     private bool lastSpawn = false;
@@ -45,6 +44,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] float bpm = 120f;
 
+    [SerializeField] float seed; // For generating consistent random numbers
+
     private void Awake()
     {
         Instance = this;
@@ -55,28 +56,32 @@ public class GameController : MonoBehaviour
         audioSource = GameObject.Find("levelMusic").GetComponent<AudioSource>();
     }
 
+    void Start()
+    {
+        SetDataForNoteGeneration();
+        InitializeBeatDetection();
+        StartGame();
+    }
+
     private void Update()
     {
         DetectNoteClicks();
-        DetectStart();
     }
 
     public void GoHome() {
         SceneManager.LoadScene("Start");
     }
 
-    private void DetectStart()
+    private void StartGame()
     {
-        if (!GameController.Instance.GameStarted.Value && Input.GetMouseButtonDown(0))
-        {
+        // if (!GameController.Instance.GameStarted.Value && Input.GetMouseButtonDown(0))
+        // {
             GameController.Instance.GameStarted.Value = true;
 
-            SetDataForNoteGeneration();
-            InitializeBeatDetection();
             StartCoroutine(SpawnNotesOnBeat());
 
             audioSource.Play();
-        }
+        // }
     }
 
     private void DetectNoteClicks()
@@ -120,10 +125,6 @@ public class GameController : MonoBehaviour
     {
         audioSamples = new float[audioSource.clip.samples * audioSource.clip.channels];
 
-        Debug.Log("Audio clip channels: " + audioSource.clip.channels);
-        Debug.Log("Audio clip samples: " + audioSource.clip.samples);
-        Debug.Log("Audio samples length: " + audioSamples.Length);
-
         audioSource.clip.GetData(audioSamples, 0);
         sampleRate = audioSource.clip.frequency;
 
@@ -133,6 +134,8 @@ public class GameController : MonoBehaviour
 
         nextBeatSample = 0;
         isBeatDetected = false;
+
+        seed = audioSamples.Length % 1000;
     }
 
     private IEnumerator SpawnNotesOnBeat()
@@ -186,8 +189,13 @@ public class GameController : MonoBehaviour
 
     private int GetRandomIndex()
     {
-        // TODO: Implement with mp3 parsing
-        var randomIndex = ( prevRandomIndex + 1.5f ) % 4;
+        var randomIndex = ( prevRandomIndex + seed ) % 4;
+        seed *= 1.5f;
+        if (seed > 10000) seed = (seed * 0.5f) % 5;
+        if (randomIndex == prevRandomIndex)
+        {
+            randomIndex *= Mathf.Pow(-1, (int) seed);
+        }
         prevRandomIndex = randomIndex;
         return (int) randomIndex;
     }
@@ -202,11 +210,6 @@ public class GameController : MonoBehaviour
         {
             lastNote = true;
         }
-    }
-
-    public void PlayAgain()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public IEnumerator EndGame()
