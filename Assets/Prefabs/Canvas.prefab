@@ -468,6 +468,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8554292138711835688, guid: 1605ef3e301d4934d94c7190748ceb86, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4364034832326165938, guid: 34a0ae77aaa6b7e9b957fd73a511250a, type: 3}
+    - target: {fileID: 8554292138711835688, guid: 1605ef3e301d4934d94c7190748ceb86, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -620,6 +628,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ecff87537dde0458d0686bfc397ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectToActivate: {fileID: 0}
+  objectToDeactivate: {fileID: 0}
 --- !u!95 &1449768795867645465
 Animator:
   serializedVersion: 7

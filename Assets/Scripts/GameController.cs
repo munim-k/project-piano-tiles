@@ -217,6 +217,7 @@ public class GameController : MonoBehaviour
         GameOver.Value = true;
         StopCoroutine(SpawnNotesOnBeat());
         audioSource.Stop();
+        CurrencyManager.Instance.AddTokens(Score.Value);
         yield return new WaitForSeconds(1);
         ShowGameOverScreen.Value = true;
     }

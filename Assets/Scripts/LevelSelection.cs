@@ -13,7 +13,7 @@ public class LevelSelection : MonoBehaviour
     private AudioSource levelMusicSource;
 
     [SerializeField] TextMeshProUGUI levelText;
-    int currentLevel = 1;
+    int currentLevel = 1; // Not index
 
     void Start()
     {
@@ -68,6 +68,15 @@ public class LevelSelection : MonoBehaviour
         // // Assuming your scene names are "level1", "level2", etc.
         // string sceneName = $"level{levelNumber+1}";
         // SceneManager.LoadScene(sceneName);
+    }
+
+    public void SetLevel(int level) {
+        LoadLevel(level-1, buttonClickSound[level-1]);
+    }
+
+    public void LoadNextLevel() {
+        currentLevel++;
+        LoadLevel(currentLevel, buttonClickSound[currentLevel-1]);
     }
 
     public void Play() {

@@ -4,9 +4,10 @@ using UniRx;
 
 public class GameOverScreen : MonoBehaviour
 {
-    public Text score;
     private CanvasElementVisibility visibility;
-    public CanvasElementVisibility winnerPraise;
+
+    [SerializeField] WonModal wonModal;
+    [SerializeField] LostModal lostModal;
 
     void Start()
     {
@@ -14,8 +15,22 @@ public class GameOverScreen : MonoBehaviour
         GameController.Instance.ShowGameOverScreen.Where((value) => value).Subscribe((value) =>
         {
             visibility.Visible = true;
-            score.text = GameController.Instance.Score.Value.ToString();
-            winnerPraise.Visible = GameController.Instance.PlayerWon;
+
+            int level = GameObject.FindAnyObjectByType<levelMusic>().level;
+            int score = GameController.Instance.Score.Value;
+
+            Debug.Log("GameController: Game Over. Score: " + score + ", Level: " + level);
+
+            if (GameController.Instance.PlayerWon)
+            {
+                wonModal.gameObject.SetActive(true);
+                wonModal.Show(score, score, level);
+            }
+            else
+            {
+                lostModal.gameObject.SetActive(true);
+                lostModal.Show(score, level);
+            }
         }).AddTo(this);
     }
 }
