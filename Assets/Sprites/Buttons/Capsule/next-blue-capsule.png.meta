@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      next-blue-capsule_0: 3301481274214075268
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

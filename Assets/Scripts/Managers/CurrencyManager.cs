@@ -1,25 +1,35 @@
 using UnityEngine;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using Unity.Services.Economy;
+using Unity.Services.Economy.Model;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class CurrencyManager : MonoBehaviour
 {
 
+    
     int tokens;
-    int gems;
+    int stars;
 
     [SerializeField] TMPro.TextMeshProUGUI tokenText;
-    [SerializeField] TMPro.TextMeshProUGUI gemText;
+    [SerializeField] TMPro.TextMeshProUGUI starText;
 
     public static CurrencyManager Instance;
 
+    private GetBalancesResult balances;
 
-    void Start()
+    async void Start()
     {
+        await InitializeUnityServices();
+        await FetchCurrencyBalances();
         DontDestroyOnLoad(gameObject);
         tokens = PlayerPrefs.GetInt("Tokens", 0);
-        gems = PlayerPrefs.GetInt("Gems", 0);
+        stars = PlayerPrefs.GetInt("Gems", 0);
 
         tokenText.text = tokens.ToString();
-        gemText.text = gems.ToString();
+        starText.text = stars.ToString();
 
         if (Instance == null)
         {
@@ -29,7 +39,77 @@ public class CurrencyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        
     }
+    private async Task InitializeUnityServices()
+    {
+        await UnityServices.InitializeAsync();
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+    }
+
+    private async Task FetchCurrencyBalances()
+    {
+        try
+        {
+            balances = await EconomyService.Instance.PlayerBalances.GetBalancesAsync();
+            
+            
+            foreach (var currency in balances.Balances)
+            {
+                if (currency.CurrencyId == "stars")
+                {
+                    stars = (int)currency.Balance;
+                    starText.text = stars.ToString();
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error fetching currency balances: " + e.Message);
+        }
+    }
+    public async Task AddStars(int amount)
+    {
+        try
+        {
+            await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync("stars", amount);
+            stars += amount;
+            starText.text = stars.ToString();
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error adding stars: " + e.Message);
+        }
+    }
+
+    public async Task<bool> SpendStars(int amount)
+    {
+        if (stars >= amount)
+        {
+            try
+            {
+                await EconomyService.Instance.PlayerBalances.DecrementBalanceAsync("stars", amount);
+                stars -= amount;
+                starText.text = stars.ToString();
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error spending stars: " + e.Message);
+            }
+        }
+        return false;
+    }
+
+    public int GetStars()
+    {
+        return stars;
+    }
+
 
     public void AddTokens(int amount)
     {
@@ -40,9 +120,9 @@ public class CurrencyManager : MonoBehaviour
 
     public void AddGems(int amount)
     {
-        gems += amount;
-        PlayerPrefs.SetInt("Gems", gems);
-        gemText.text = gems.ToString();
+        stars += amount;
+        PlayerPrefs.SetInt("Gems", stars);
+        starText.text = stars.ToString();
     }
 
     public void RemoveTokens(int amount)
@@ -54,9 +134,9 @@ public class CurrencyManager : MonoBehaviour
 
     public void RemoveGems(int amount)
     {
-        gems -= amount;
-        PlayerPrefs.SetInt("Gems", gems);
-        gemText.text = gems.ToString();
+        stars -= amount;
+        PlayerPrefs.SetInt("Gems", stars);
+        starText.text = stars.ToString();
     }
 
     public int GetTokens()
@@ -66,7 +146,7 @@ public class CurrencyManager : MonoBehaviour
 
     public int GetGems()
     {
-        return gems;
+        return stars;
     }
 
     public void SetTokens(int amount)
@@ -78,9 +158,9 @@ public class CurrencyManager : MonoBehaviour
 
     public void SetGems(int amount)
     {
-        gems = amount;
-        PlayerPrefs.SetInt("Gems", gems);
-        gemText.text = gems.ToString();
+        stars = amount;
+        PlayerPrefs.SetInt("Gems", stars);
+        starText.text = stars.ToString();
     }
 
     public bool CheckTokens(int amount) {
@@ -88,7 +168,7 @@ public class CurrencyManager : MonoBehaviour
     }
 
     public bool CheckGems(int amount) {
-        return gems >= amount;
+        return stars >= amount;
     }
 
     public bool SpendTokens(int Tokens) {

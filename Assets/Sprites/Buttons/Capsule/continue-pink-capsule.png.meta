@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      continue-pink-capsule_0: -2710472402019983982
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

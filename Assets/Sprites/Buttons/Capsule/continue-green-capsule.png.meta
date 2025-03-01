@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      continue-green-capsule_0: 3356591158039034082
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

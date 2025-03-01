@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      skip-orange-capsule_0: -6408165070102596673
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

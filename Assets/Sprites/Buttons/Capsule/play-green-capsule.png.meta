@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      play-green-capsule_0: -4480255872554753041
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

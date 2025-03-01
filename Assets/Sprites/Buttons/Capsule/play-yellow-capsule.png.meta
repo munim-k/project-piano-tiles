@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      play-yellow-capsule_0: 6393651489587844330
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
