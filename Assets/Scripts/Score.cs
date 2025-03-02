@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using UniRx;
-using UnityEngine.UI;
+using TMPro;
 
 public class Score : MonoBehaviour
 {
-    private Text text;
+    private TMP_Text text;
 
     void Start()
     {
-        text = GetComponent<Text>();
-        GameController.Instance.Score.SubscribeToText(text).AddTo(this);
+        text = GetComponent<TMP_Text>();
+    }
+
+    void Update()
+    {
+        text.text = GameController.Instance.Score.Value.ToString();
     }
 }
