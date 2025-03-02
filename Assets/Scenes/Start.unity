@@ -937,7 +937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5790423261497034726, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 155.79999
       objectReference: {fileID: 0}
     - target: {fileID: 5790423261497034726, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1043,11 +1043,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8416197071664199706, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2404582567873788141, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8328279461830617512, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
     - {fileID: 1036441958111498948, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+    - {fileID: 2826615460942517165, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8862794495229166244, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
@@ -1106,11 +1111,11 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 100
-    m_Bottom: 102
+    m_Top: 151
+    m_Bottom: 267
   m_ChildAlignment: 4
   m_StartCorner: 0
-  m_StartAxis: 1
+  m_StartAxis: 0
   m_CellSize: {x: 553.6, y: 358.6}
   m_Spacing: {x: -116.6, y: 262.2}
   m_Constraint: 1
