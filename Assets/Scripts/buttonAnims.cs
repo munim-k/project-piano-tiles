@@ -33,11 +33,7 @@ public class buttonAnims : MonoBehaviour
 
     void AnimateButtonPress()
     {
-        transform.DOScale(new Vector3(3, 3, 3), 0.1f).OnComplete(() =>
-        {
-            transform.DOScale(originalScale, 0.1f).OnComplete(() =>
-            {
-                if (objectToActivate != null)
+        if (objectToActivate != null)
                 {
                     objectToActivate.SetActive(true);
                 }
@@ -45,7 +41,20 @@ public class buttonAnims : MonoBehaviour
                 {
                     objectToDeactivate.SetActive(false);
                 }
-            });
-        });
+        
+        // transform.DOScale(new Vector3(3, 3, 3), 0.1f).OnComplete(() =>
+        // {
+        //     transform.DOScale(originalScale, 0.1f).OnComplete(() =>
+        //     {
+        //         if (objectToActivate != null)
+        //         {
+        //             objectToActivate.SetActive(true);
+        //         }
+        //         if (objectToDeactivate != null)
+        //         {
+        //             objectToDeactivate.SetActive(false);
+        //         }
+        //     });
+        // });
     }
 }

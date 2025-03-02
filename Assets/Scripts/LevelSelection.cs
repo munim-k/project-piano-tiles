@@ -65,9 +65,9 @@ public class LevelSelection : MonoBehaviour
 
         levelMusic.Instance.level = levelNumber;
         
-        // // Assuming your scene names are "level1", "level2", etc.
-        // string sceneName = $"level{levelNumber+1}";
-        // SceneManager.LoadScene(sceneName);
+        // Assuming your scene names are "level1", "level2", etc.
+        string sceneName = $"level";
+        SceneManager.LoadScene(sceneName);
     }
 
     public void SetLevel(int level) {
@@ -80,8 +80,7 @@ public class LevelSelection : MonoBehaviour
     }
 
     public void Play() {
-        string sceneName = $"level{currentLevel}";
-        SceneManager.LoadScene(sceneName);
+        LoadLevel(0, buttonClickSound[0]);
     }
     
 }
