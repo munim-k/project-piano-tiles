@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 10
+  serializedVersion: 9
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 13
-  m_BakeOnSceneLoad: 0
+  serializedVersion: 12
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,6 +66,9 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
+    m_FinalGather: 0
+    m_FinalGatherFiltering: 1
+    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -1052,27 +1055,27 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
-      propertyPath: 'buttonClickSound.Array.data[0]'
+      propertyPath: buttonClickSound.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: b513e31231acc80428d8b37e6bf02809, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
-      propertyPath: 'buttonClickSound.Array.data[1]'
+      propertyPath: buttonClickSound.Array.data[1]
       value: 
       objectReference: {fileID: 8300000, guid: 4bc288909dcfe004bafb2b2682a77964, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
-      propertyPath: 'buttonClickSound.Array.data[2]'
+      propertyPath: buttonClickSound.Array.data[2]
       value: 
       objectReference: {fileID: 8300000, guid: 6b25bdcf793a2ec4b8a8940476f35dc4, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
-      propertyPath: 'buttonClickSound.Array.data[3]'
+      propertyPath: buttonClickSound.Array.data[3]
       value: 
       objectReference: {fileID: 8300000, guid: b3b1272dd5735996f8ed96b3861b70ed, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
-      propertyPath: 'buttonClickSound.Array.data[4]'
+      propertyPath: buttonClickSound.Array.data[4]
       value: 
       objectReference: {fileID: 8300000, guid: 052ceec9f41210c56a119e92249668ac, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
-      propertyPath: 'buttonClickSound.Array.data[5]'
+      propertyPath: buttonClickSound.Array.data[5]
       value: 
       objectReference: {fileID: 8300000, guid: 4ec877e024a7e88caaa1b7a896ba0d06, type: 3}
     - target: {fileID: 2826615460942517165, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
@@ -1642,7 +1645,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &853405464
 Animator:
-  serializedVersion: 7
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1656,7 +1659,6 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -1855,8 +1857,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 626e042ac976253e9a65b7688f63aad5, type: 2}
-  m_sharedMaterial: {fileID: 7554713799462727168, guid: 626e042ac976253e9a65b7688f63aad5, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 49db9a3d6042fc8609e04d2b7710eaf8, type: 2}
+  m_sharedMaterial: {fileID: -3082921084845670301, guid: 49db9a3d6042fc8609e04d2b7710eaf8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1896,17 +1898,15 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
-  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -2387,7 +2387,7 @@ MonoBehaviour:
   m_text: Level 01
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 49db9a3d6042fc8609e04d2b7710eaf8, type: 2}
-  m_sharedMaterial: {fileID: 3053352679448144678, guid: 49db9a3d6042fc8609e04d2b7710eaf8, type: 2}
+  m_sharedMaterial: {fileID: -3082921084845670301, guid: 49db9a3d6042fc8609e04d2b7710eaf8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2427,17 +2427,15 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
-  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -2524,8 +2522,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 626e042ac976253e9a65b7688f63aad5, type: 2}
-  m_sharedMaterial: {fileID: 7554713799462727168, guid: 626e042ac976253e9a65b7688f63aad5, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 49db9a3d6042fc8609e04d2b7710eaf8, type: 2}
+  m_sharedMaterial: {fileID: -3082921084845670301, guid: 49db9a3d6042fc8609e04d2b7710eaf8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2565,17 +2563,15 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
-  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
