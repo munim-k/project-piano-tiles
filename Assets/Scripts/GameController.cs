@@ -30,8 +30,6 @@ public class GameController : MonoBehaviour
     public int LastPlayedNoteId { get; set; } = 0;
     public AudioSource audioSource;
     private float songSegmentLength = 0.8f;
-    private bool lastNote = false;
-    private bool lastSpawn = false;
     public ReactiveProperty<bool> ShowGameOverScreen { get; set; }
     public bool PlayerWon { get; set; } = false;
 
@@ -68,20 +66,16 @@ public class GameController : MonoBehaviour
         DetectNoteClicks();
     }
 
-    public void GoHome() {
+    public void GoHome()
+    {
         SceneManager.LoadScene("Start");
     }
 
     private void StartGame()
     {
-        // if (!GameController.Instance.GameStarted.Value && Input.GetMouseButtonDown(0))
-        // {
-            GameController.Instance.GameStarted.Value = true;
-
-            StartCoroutine(SpawnNotesOnBeat());
-
-            audioSource.Play();
-        // }
+        GameController.Instance.GameStarted.Value = true;
+        StartCoroutine(SpawnNotesOnBeat());
+        audioSource.Play();
     }
 
     private void DetectNoteClicks()
@@ -95,7 +89,6 @@ public class GameController : MonoBehaviour
                 var gameObject = hit.collider.gameObject;
                 if (gameObject.CompareTag("Note"))
                 {
-                    // Debug.Log("GameController: Hit object is a Note.");
                     var note = gameObject.GetComponent<Note>();
                     note.Play();
                 }
@@ -124,28 +117,28 @@ public class GameController : MonoBehaviour
     private void InitializeBeatDetection()
     {
         audioSamples = new float[audioSource.clip.samples * audioSource.clip.channels];
-
         audioSource.clip.GetData(audioSamples, 0);
         sampleRate = audioSource.clip.frequency;
-
         samplesPerBeat = Mathf.FloorToInt((60f / bpm) * sampleRate);
-
         noteSpeed = noteHeight / samplesPerBeat * sampleRate;
-
         nextBeatSample = 0;
         isBeatDetected = false;
-
         seed = audioSamples.Length % 1000;
     }
 
     private IEnumerator SpawnNotesOnBeat()
     {
-        while (true)
+        bool gameEnded = false;
+        bool hasStartedPlaying = false;
+        
+        while (!gameEnded)
         {
             if (audioSource.isPlaying)
             {
-                int currentSample = (int)(audioSource.timeSamples % audioSource.clip.samples);
+                hasStartedPlaying = true;
+                int currentSample = audioSource.timeSamples;
 
+                // Check for beat detection and spawn notes
                 if (currentSample >= nextBeatSample && !isBeatDetected)
                 {
                     isBeatDetected = true;
@@ -156,18 +149,38 @@ public class GameController : MonoBehaviour
                 {
                     isBeatDetected = false;
                 }
+
+                // Debug logging to track variables
+                Debug.Log($"Time remaining: {audioSource.clip.length - audioSource.time}, " +
+                        $"LastPlayedNoteId: {LastPlayedNoteId}, " +
+                        $"lastNoteId: {lastNoteId}");
             }
+
+            // Only check end game conditions after audio has started playing at least once
+            if (hasStartedPlaying)
+            {
+                bool isNearEnd = audioSource.clip.length - audioSource.time <= songSegmentLength;
+                bool hasStoppedPlaying = !audioSource.isPlaying;
+                bool allNotesPlayed = LastPlayedNoteId >= lastNoteId - 1;
+
+                if ((isNearEnd || hasStoppedPlaying) && allNotesPlayed)
+                {
+                    Debug.Log("Ending game with victory condition");
+                    GameOver.Value = true;
+                    PlayerWon = true;
+                    audioSource.Stop();
+                    ShowGameOverScreen.Value = true;
+                    gameEnded = true;
+                    yield break;
+                }
+            }
+
             yield return null;
         }
     }
 
     public void SpawnNotes()
     {
-        if (lastSpawn)
-        {
-            return;
-        }
-        
         noteSpawnStartPosY = lastSpawnedNote.position.y + noteHeight;
         Note note = null;
         var randomIndex = GetRandomIndex();
@@ -189,36 +202,24 @@ public class GameController : MonoBehaviour
 
     private int GetRandomIndex()
     {
-        var randomIndex = ( prevRandomIndex + seed ) % 4;
+        var randomIndex = (prevRandomIndex + seed) % 4;
         seed *= 1.5f;
         if (seed > 10000) seed = (seed * 0.5f) % 5;
         if (randomIndex == prevRandomIndex)
         {
-            randomIndex *= Mathf.Pow(-1, (int) seed);
+            randomIndex *= Mathf.Pow(-1, (int)seed);
         }
         prevRandomIndex = randomIndex;
-        return (int) randomIndex;
+        return (int)randomIndex;
     }
 
-    public void PlaySomeOfSong()
-    {
-        if (!audioSource.isPlaying && !lastNote)
-        {
-            audioSource.Play();
-        }
-        if (audioSource.clip.length - audioSource.time <= songSegmentLength)
-        {
-            lastNote = true;
-        }
-    }
-
-    public IEnumerator EndGame()
+    public IEnumerator EndGame(bool won = false)
     {
         GameOver.Value = true;
-        StopCoroutine(SpawnNotesOnBeat());
+        if (won) PlayerWon = true;
         audioSource.Stop();
         CurrencyManager.Instance.AddTokens(Score.Value);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1); // Short delay before showing the game over screen
         ShowGameOverScreen.Value = true;
     }
 }

@@ -10,7 +10,7 @@ public class WonModal : MonoBehaviour
     public void Show(int score, int rewards, int level)
     {
         pointsText.text = "" + score;
-        rewardsText.text = "Rewards: " + rewards;
+        rewardsText.text = "" + rewards;
         levelText.text = "Level: 0" + level;
     }
 
