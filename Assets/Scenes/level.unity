@@ -1593,6 +1593,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3067452681787494358, guid: 20630f4a2db65d933bd6d570abab0064, type: 3}
+      propertyPath: wonModal
+      value: 
+      objectReference: {fileID: 2395110409304816769}
     - target: {fileID: 3800943525967667003, guid: 20630f4a2db65d933bd6d570abab0064, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1702,6 +1706,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20630f4a2db65d933bd6d570abab0064, type: 3}
+--- !u!114 &2395110409304816769 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8273056949599878377, guid: 20630f4a2db65d933bd6d570abab0064, type: 3}
+  m_PrefabInstance: {fileID: 2395110409304816768}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61374206cd07a72b782cc68c9e2cf523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
