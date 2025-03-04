@@ -151,9 +151,9 @@ public class GameController : MonoBehaviour
                 }
 
                 // Debug logging to track variables
-                Debug.Log($"Time remaining: {audioSource.clip.length - audioSource.time}, " +
-                        $"LastPlayedNoteId: {LastPlayedNoteId}, " +
-                        $"lastNoteId: {lastNoteId}");
+                // Debug.Log($"Time remaining: {audioSource.clip.length - audioSource.time}, " +
+                //         $"LastPlayedNoteId: {LastPlayedNoteId}, " +
+                //         $"lastNoteId: {lastNoteId}");
             }
 
             // Only check end game conditions after audio has started playing at least once

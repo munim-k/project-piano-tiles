@@ -109,7 +109,7 @@ public class LoginManager : MonoBehaviour
 
             playerInfo = AuthenticationService.Instance.PlayerInfo;
             var name = await AuthenticationService.Instance.GetPlayerNameAsync();
-                SceneManager.LoadScene("Login");
+                SceneManager.LoadScene("Loading");
                     }
         catch (AuthenticationException ex)
         {

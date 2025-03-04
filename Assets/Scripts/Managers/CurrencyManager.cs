@@ -20,7 +20,7 @@ public class CurrencyManager : MonoBehaviour
 
     async void Start()
     {
-        await InitializeUnityServices();
+        //await InitializeUnityServices();
         await FetchCurrencyBalances();
         DontDestroyOnLoad(gameObject);
         tokens = PlayerPrefs.GetInt("Tokens", 0);
@@ -58,7 +58,7 @@ public class CurrencyManager : MonoBehaviour
             
             foreach (var currency in balances.Balances)
             {
-                if (currency.CurrencyId == "stars")
+                if (currency.CurrencyId == "STARS")
                 {
                     stars = (int)currency.Balance;
                     starText.text = stars.ToString();
@@ -74,7 +74,7 @@ public class CurrencyManager : MonoBehaviour
     {
         try
         {
-            await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync("stars", amount);
+            await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync("STARS", amount);
             stars += amount;
             starText.text = stars.ToString();
         }
@@ -90,7 +90,7 @@ public class CurrencyManager : MonoBehaviour
         {
             try
             {
-                await EconomyService.Instance.PlayerBalances.DecrementBalanceAsync("stars", amount);
+                await EconomyService.Instance.PlayerBalances.DecrementBalanceAsync("STARS", amount);
                 stars -= amount;
                 starText.text = stars.ToString();
                 return true;
