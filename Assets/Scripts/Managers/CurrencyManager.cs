@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 public class CurrencyManager : MonoBehaviour
 {
   
-    int tokens;
-    int stars;
+    [SerializeField] int tokens;
+    [SerializeField] int stars;
 
     [SerializeField] TMPro.TextMeshProUGUI tokenText;
     [SerializeField] TMPro.TextMeshProUGUI starText;
@@ -24,7 +24,7 @@ public class CurrencyManager : MonoBehaviour
         await FetchCurrencyBalances();
         DontDestroyOnLoad(gameObject);
         tokens = PlayerPrefs.GetInt("Tokens", 0);
-        stars = PlayerPrefs.GetInt("Gems", 0);
+        // stars = PlayerPrefs.GetInt("Gems", 0);
 
         tokenText.text = tokens.ToString();
         starText.text = stars.ToString();

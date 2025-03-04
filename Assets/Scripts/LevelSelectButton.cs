@@ -19,6 +19,8 @@ public class LevelSelectButton : MonoBehaviour
         }
 
         Debug.Log("Setting color: " + color);
-        gameObject.GetComponent<Image>().color = color;
+
+        // Directly setting it as parameter color doesnt work for some reason
+        gameObject.GetComponent<Image>().color = new Color(color.r, color.g, color.b, color.a);
     }
 }

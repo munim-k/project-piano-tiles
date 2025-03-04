@@ -15,13 +15,13 @@ public class LevelSelection : MonoBehaviour
     // int currentLevel = 0; // Now stored in LevelManager
 
     [SerializeField] int[] prices = {5, 20, 25, 30, 37, 45};
-    [SerializeField] Color[] colors = {
-        new(93, 227, 120, 1), // Green
-        new(166, 229, 255, 1), // Light blue
-        new(224, 190, 255, 1), // Light purple
-        new(224, 238, 249, 1), // White
-        new(255, 237, 137, 1), // Yellow
-        new(69, 141, 225, 1) // Blue
+    [SerializeField] public Color[] colors = {
+        new(93, 227, 120, 255), // Green
+        new(166, 229, 255, 255), // Light blue
+        new(224, 190, 255, 255), // Light purple
+        new(224, 238, 249, 255), // White
+        new(255, 237, 137, 255), // Yellow
+        new(69, 141, 225, 255) // Blue
     };
 
     void Start()
@@ -76,7 +76,10 @@ public class LevelSelection : MonoBehaviour
     private void BuyLevel(int levelIndex) {
         int price = prices[levelIndex];
         if (CurrencyManager.Instance.GetGems() >= price) {
-            ShowConfirm(levelIndex, price);
+            // TODO: Show confirm dialog
+            // ShowConfirm(levelIndex, price); 
+
+            ConfirmPurchase(levelIndex, price);
         }
     }
 
@@ -93,10 +96,25 @@ public class LevelSelection : MonoBehaviour
     }
 
     private void ConfirmPurchase(int levelIndex, int price) {
+        if (confirmUI)
+            confirmUI.SetActive(false);
         CurrencyManager.Instance.RemoveGems(price);
         LevelManager.Instance.levelsUnlocked[levelIndex] = true;
-        // LevelManager.Instance.Save();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        // Update button
+        GameObject buttonObj = contentTransform.Find($"Level_{levelIndex}_Button").gameObject;
+        LevelSelectButton lsb = buttonObj.GetComponent<LevelSelectButton>();
+        lsb.SetLevel(levelIndex, price, true, colors[levelIndex]);
+
+        // Set loading level
+        Button button = buttonObj.GetComponent<Button>();
+        AudioClip clip = null;
+        if (buttonClickSound != null && levelIndex < buttonClickSound.Length)
+        {
+            clip = buttonClickSound[levelIndex];
+        }
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => LoadLevel(levelIndex, clip));
     }
 
     private void LoadLevel(int levelNumber , AudioClip buttonClickSound)
