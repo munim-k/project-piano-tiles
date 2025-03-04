@@ -109,7 +109,7 @@ public class LoginManager : MonoBehaviour
 
             playerInfo = AuthenticationService.Instance.PlayerInfo;
             var name = await AuthenticationService.Instance.GetPlayerNameAsync();
-                SceneManager.LoadScene("Loading");
+                SceneManager.LoadScene("login");
                     }
         catch (AuthenticationException ex)
         {
@@ -156,7 +156,7 @@ public class LoginManager : MonoBehaviour
         {
             await AuthenticationService.Instance.SignInWithUnityAsync(token);
             Debug.Log("Signed in with stored token successfully!");
-            SceneManager.LoadScene("Start");
+            SceneManager.LoadScene("login");
         }
         catch (Exception ex)
         {
