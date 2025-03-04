@@ -62,8 +62,41 @@ public class LevelSelection : MonoBehaviour
                 clip = buttonClickSound[i];
             }
             
-            button.onClick.AddListener(() => LoadLevel(levelIndex, clip));
+            if (LevelManager.Instance.levelsUnlocked[i])
+            {
+                button.onClick.AddListener(() => LoadLevel(levelIndex, clip));
+            }
+            else
+            {
+                button.onClick.AddListener(() => BuyLevel(levelIndex));
+            }
         }
+    }
+
+    private void BuyLevel(int levelIndex) {
+        int price = prices[levelIndex];
+        if (CurrencyManager.Instance.GetGems() >= price) {
+            ShowConfirm(levelIndex, price);
+        }
+    }
+
+    [SerializeField] GameObject confirmUI;
+    [SerializeField] Button confirmButton;
+    void ShowConfirm(int levelIndex, int price) {
+        confirmUI.SetActive(true);
+        confirmButton.onClick.RemoveAllListeners();
+        confirmButton.onClick.AddListener(() => ConfirmPurchase(levelIndex, price));
+    }
+
+    public void CancelPurchase() {
+        confirmUI.SetActive(false);
+    }
+
+    private void ConfirmPurchase(int levelIndex, int price) {
+        CurrencyManager.Instance.RemoveGems(price);
+        LevelManager.Instance.levelsUnlocked[levelIndex] = true;
+        // LevelManager.Instance.Save();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void LoadLevel(int levelNumber , AudioClip buttonClickSound)
