@@ -3,6 +3,7 @@ using Unity.Services.CloudSave;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
@@ -68,30 +69,36 @@ public class LevelManager : MonoBehaviour
     {
         try
         {
-            var savedData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "levels_unlocked", "levels_completed" });
-
+            // var savedData = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> { "levels_unlocked", "levels_completed" });
+            var savedData = await CloudSaveService.Instance.Data.Player.LoadAllAsync();
+            
             bool[] levelsUnlocked = new bool[LEVELS];
             bool[] levelsCompleted = new bool[LEVELS];
 
-            
+            // "[1,1,1,0,0,0]"
             if (savedData.TryGetValue("levels_unlocked", out var unlockedObj))
             {
-                
-                List<int> unlockedList = DeserializeList(unlockedObj);
-                for (int i = 0; i < Mathf.Min(unlockedList.Count, LEVELS); i++)
-                    if( unlockedList[i] == 1)
+                String str = unlockedObj.Value.GetAsString();
+                int count = 1;
+                for (int i = 0; i < levelsUnlocked.Length; i++)
+                {
+                    if(str[count] == '1')
                         levelsUnlocked[i] = true;
+                    count += 2;
+                }
             }
 
             
             if (savedData.TryGetValue("levels_completed", out var completedObj))
             {
-                
-                List<int> completedList = DeserializeList(completedObj);
-                
-                for (int i = 0; i < Mathf.Min(completedList.Count, LEVELS); i++)
-                     if(completedList[i] == 1)
+                String str = completedObj.Value.GetAsString();
+                int count = 1;
+                for (int i = 0; i < levelsCompleted.Length; i++)
+                {
+                    if( str[count] == '1')
                         levelsCompleted[i] = true;
+                    count += 2;
+                }
             }
 
             Debug.Log("Level data loaded from Cloud Save.");
@@ -172,6 +179,11 @@ public class LevelManager : MonoBehaviour
     {
         levelsCompleted[level] = true;
         await saveData();
+    }
+
+    public void testing(){
+        // saveData();
+        LoadGameData();
     }
 
    
