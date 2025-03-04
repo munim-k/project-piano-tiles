@@ -4,8 +4,6 @@ public class levelMusic : MonoBehaviour
 {
     private static levelMusic _instance;
 
-    public int level = 0;
-
     public static levelMusic Instance
     {
         get

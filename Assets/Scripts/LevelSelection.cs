@@ -8,20 +8,29 @@ public class LevelSelection : MonoBehaviour
     [SerializeField] private GameObject buttonPrefab;
     [SerializeField] private Transform contentTransform;
     
-    [SerializeField] private int numberOfLevels = 6;
     public  AudioClip[] buttonClickSound;
     private AudioSource levelMusicSource;
 
     [SerializeField] TextMeshProUGUI levelText;
-    int currentLevel = 1; // Not index
+    // int currentLevel = 0; // Now stored in LevelManager
+
+    [SerializeField] int[] prices = {5, 20, 25, 30, 37, 45};
+    [SerializeField] Color[] colors = {
+        new(93, 227, 120, 1), // Green
+        new(166, 229, 255, 1), // Light blue
+        new(224, 190, 255, 1), // Light purple
+        new(224, 238, 249, 1), // White
+        new(255, 237, 137, 1), // Yellow
+        new(69, 141, 225, 1) // Blue
+    };
 
     void Start()
     {
-        currentLevel = levelMusic.Instance.level + 1;
+        int currentLevel = LevelManager.Instance.level;
         levelMusicSource = levelMusic.Instance.GetComponent<AudioSource>();
-        levelMusicSource.clip = buttonClickSound[currentLevel-1];
-        levelText.text = $"Level 0{currentLevel}";
-        SpawnLevelButtons(numberOfLevels);
+        levelMusicSource.clip = buttonClickSound[currentLevel];
+        levelText.text = $"Level 0{currentLevel+1}";
+        SpawnLevelButtons(LevelManager.LEVELS);
     }
 
     private void SpawnLevelButtons(int levels)
@@ -39,6 +48,12 @@ public class LevelSelection : MonoBehaviour
 
             Button button = buttonObj.GetComponent<Button>();
             int levelIndex = i;
+
+            LevelSelectButton lsb = buttonObj.GetComponent<LevelSelectButton>();
+            if (lsb != null)
+            {
+                lsb.SetLevel(i, prices[i], LevelManager.Instance.levelsUnlocked[i], colors[i]);
+            }
             
             // Safely get audio clip
             AudioClip clip = null;
@@ -59,11 +74,10 @@ public class LevelSelection : MonoBehaviour
             levelMusicSource.clip = buttonClickSound;
         }
 
-        currentLevel = levelNumber + 1;
+        LevelManager.Instance.level = levelNumber;
+        int currentLevel = levelNumber + 1;
 
         levelText.text = $"Level 0{currentLevel}";
-
-        levelMusic.Instance.level = levelNumber;
         
         // Assuming your scene names are "level1", "level2", etc.
         string sceneName = $"level";
@@ -74,10 +88,10 @@ public class LevelSelection : MonoBehaviour
         LoadLevel(level-1, buttonClickSound[level-1]);
     }
 
-    public void LoadNextLevel() {
-        currentLevel++;
-        LoadLevel(currentLevel, buttonClickSound[currentLevel-1]);
-    }
+    // public void LoadNextLevel() {
+    //     currentLevel++;
+    //     LoadLevel(currentLevel, buttonClickSound[currentLevel-1]);
+    // }
 
     public void Play() {
         LoadLevel(0, buttonClickSound[0]);

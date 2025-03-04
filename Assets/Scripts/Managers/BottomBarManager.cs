@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class ButtomBarManager : MonoBehaviour
+public class BottomBarManager : MonoBehaviour
 {
 
-    public static ButtomBarManager Instance;
+    public static BottomBarManager Instance;
 
     void Start() {
         if (Instance == null) {

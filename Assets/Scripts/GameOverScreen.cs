@@ -16,7 +16,7 @@ public class GameOverScreen : MonoBehaviour
         {
             visibility.Visible = true;
 
-            int level = GameObject.FindAnyObjectByType<levelMusic>().level;
+            int level = LevelManager.Instance.level;
             int score = GameController.Instance.Score.Value;
 
             Debug.Log("GameController: Game Over. Score: " + score + ", Level: " + level);

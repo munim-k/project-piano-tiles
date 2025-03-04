@@ -3,13 +3,11 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.Economy;
 using Unity.Services.Economy.Model;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public class CurrencyManager : MonoBehaviour
 {
-
-    
+  
     int tokens;
     int stars;
 
