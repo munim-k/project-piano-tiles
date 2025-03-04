@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Numerics;
 using RotaryHeart.Lib.SerializableDictionary;
+using UnityEngine.SceneManagement;
 
 namespace Thirdweb.Examples
 {
@@ -177,6 +178,7 @@ namespace Thirdweb.Examples
         {
             ThirdwebDebug.Log($"Connected to {_address}");
 
+            ThirdwebManager.Instance.connectedWalletAddress = _address;
             var addy = _address.ShortenAddress();
             foreach (var addressText in addressTexts)
                 addressText.text = addy;
@@ -260,6 +262,10 @@ namespace Thirdweb.Examples
         {
             var replaced = networkIdentifier.Replace("-", " ");
             return replaced.Substring(0, 1).ToUpper() + replaced.Substring(1);
+        }
+
+        public void LoadMainScene(string scene){
+            SceneManager.LoadScene(scene);
         }
     }
 }

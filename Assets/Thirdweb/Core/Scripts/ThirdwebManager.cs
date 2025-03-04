@@ -127,6 +127,8 @@ namespace Thirdweb
 
         public static ThirdwebManager Instance { get; private set; }
 
+        public string connectedWalletAddress;
+
         private void Awake()
         {
             if (Instance == null)
