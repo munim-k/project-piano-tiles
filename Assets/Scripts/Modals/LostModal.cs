@@ -20,6 +20,18 @@ public class LostModal : MonoBehaviour
 
     public void Skip() {
         // TODO: Implement skip logic
+
+        if (CurrencyManager.Instance.GetGems() >= 10)
+        {
+            CurrencyManager.Instance.RemoveGems(10);
+            LevelManager.Instance.levelsCompleted[LevelManager.Instance.level] = true;
+            SceneManager.LoadScene("Start");
+        }
+        else
+        {
+            Debug.Log("Not enough gems");
+        }
+
         SceneManager.LoadScene("Start");
     }
 }

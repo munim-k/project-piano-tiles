@@ -19,12 +19,11 @@ public class GameOverScreen : MonoBehaviour
             int level = LevelManager.Instance.level;
             int score = GameController.Instance.Score.Value;
 
-            Debug.Log("GameController: Game Over. Score: " + score + ", Level: " + level);
-
             if (GameController.Instance.PlayerWon)
             {
                 wonModal.gameObject.SetActive(true);
                 wonModal.Show(score, score, level);
+                LevelManager.Instance.levelsCompleted[level] = true;
             }
             else
             {
