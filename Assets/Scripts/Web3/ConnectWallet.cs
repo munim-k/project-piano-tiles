@@ -26,6 +26,7 @@ namespace Thirdweb.Unity
             if(wallet != null)
             {
                 Debug.Log("Connected to wallet: " + wallet);
+                PostConnect();
             }
         }
 

@@ -115,29 +115,8 @@ TextureImporter:
     compressionQuality: 100
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-<<<<<<< Updated upstream:Assets/Thirdweb/Examples/Sprites/Connect/Button_Hover.png.meta
     overridden: 0
     ignorePlatformSupport: 0
-=======
-    overridden: 1
->>>>>>> Stashed changes:Assets/Thirdweb/Plugins/WalletConnectUnity/com.walletconnect.ui/Sprites/WalletConnect Logo Accent.png.meta
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 512
-    resizeAlgorithm: 0
-    textureFormat: 51
-    textureCompression: 1
-    compressionQuality: 100
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-<<<<<<< Updated upstream:Assets/Thirdweb/Examples/Sprites/Connect/Button_Hover.png.meta
-    overridden: 0
-    ignorePlatformSupport: 0
-=======
-    overridden: 1
->>>>>>> Stashed changes:Assets/Thirdweb/Plugins/WalletConnectUnity/com.walletconnect.ui/Sprites/WalletConnect Logo Accent.png.meta
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
