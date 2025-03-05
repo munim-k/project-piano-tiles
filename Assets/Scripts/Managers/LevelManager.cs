@@ -14,8 +14,6 @@ public class LevelManager : MonoBehaviour
     public bool[] levelsUnlocked = new bool[LEVELS];
     public bool[] levelsCompleted = new bool[LEVELS];
 
-    
-
     public int level;
 
 
@@ -161,6 +159,8 @@ public class LevelManager : MonoBehaviour
     }
     private void Start()
     {
+        var val = CookieManager.Instance.LoadProgress("wallet");
+        Debug.Log("Value Loaded from cookie: " + val);
         //InitializeGameData();
     }
     private async Task InitializeGameData()
