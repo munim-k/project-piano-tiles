@@ -16,7 +16,7 @@ public class GameOverScreen : MonoBehaviour
         {
             visibility.Visible = true;
 
-            int level = LevelManager.Instance.level;
+            int level = LevelManager.Instance.level + 1;
             int score = GameController.Instance.Score.Value;
 
             if (GameController.Instance.PlayerWon)
