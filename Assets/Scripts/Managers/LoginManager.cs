@@ -85,9 +85,7 @@ public class LoginManager : MonoBehaviour
                 return;
             }
 
-            Debug.Log("PlayerAccountService.Instance is not null. Starting sign-in...");
             await PlayerAccountService.Instance.StartSignInAsync();
-            Debug.Log("Sign-in initiated successfully.");
         }
         catch (Exception ex)
         {
@@ -112,9 +110,7 @@ public class LoginManager : MonoBehaviour
                 return;
             }
 
-            Debug.Log("AccessToken retrieved successfully. Signing in with Unity...");
             await SignInWithUnityAsync(accessToken);
-            Debug.Log("Signed in with Unity successfully.");
         }
         catch (Exception ex)
         {
@@ -132,15 +128,13 @@ public class LoginManager : MonoBehaviour
                 return;
             }
 
-            Debug.Log("AuthenticationService.Instance is not null. Signing in with Unity...");
             await AuthenticationService.Instance.SignInWithUnityAsync(accessToken);
             Debug.Log("Unity Authentication successful!");
 
             playerInfo = AuthenticationService.Instance.PlayerInfo;
             var name = await AuthenticationService.Instance.GetPlayerNameAsync();
-            Debug.Log("Player name retrieved: " + name);
-            SceneManager.LoadScene("login");
-        }
+                SceneManager.LoadScene("login");
+                    }
         catch (AuthenticationException ex)
         {
             Debug.LogError("Unity Authentication failed: " + ex.Message);
