@@ -15,7 +15,7 @@ public class Missions : MonoBehaviour
         "Test"
     };
 
-    [SerializeField] ulong ActiveChainId = 11155111;
+    [SerializeField] ulong ActiveChainId = 1868;
 
     [SerializeField] MissionButton[] claimButtons = new MissionButton[5];
 

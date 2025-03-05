@@ -21,7 +21,7 @@ namespace Thirdweb.Unity
 
         public async void onClick()
         {
-            var options = new WalletOptions(provider: WalletProvider.MetaMaskWallet, chainId: 1);
+            var options = new WalletOptions(provider: WalletProvider.MetaMaskWallet, chainId: 1868);
             var wallet = await ThirdwebManager.Instance.ConnectWallet(options);
             if(wallet != null)
             {

@@ -79,12 +79,6 @@ public class LoginManager : MonoBehaviour
         Debug.Log("Initiating sign-in...");
         try
         {
-            if (PlayerAccountService.Instance == null)
-            {
-                Debug.LogError("PlayerAccountService.Instance is null.");
-                return;
-            }
-
             await PlayerAccountService.Instance.StartSignInAsync();
         }
         catch (Exception ex)
@@ -97,19 +91,7 @@ public class LoginManager : MonoBehaviour
     {
         try
         {
-            if (PlayerAccountService.Instance == null)
-            {
-                Debug.LogError("PlayerAccountService.Instance is null.");
-                return;
-            }
-
             var accessToken = PlayerAccountService.Instance.AccessToken;
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                Debug.LogError("AccessToken is null or empty.");
-                return;
-            }
-
             await SignInWithUnityAsync(accessToken);
         }
         catch (Exception ex)
@@ -122,12 +104,6 @@ public class LoginManager : MonoBehaviour
     {
         try
         {
-            if (AuthenticationService.Instance == null)
-            {
-                Debug.LogError("AuthenticationService.Instance is null.");
-                return;
-            }
-
             await AuthenticationService.Instance.SignInWithUnityAsync(accessToken);
             Debug.Log("Unity Authentication successful!");
 
