@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+namespace Thirdweb.Unity{
 public class MintGemsManager : MonoBehaviour
 {
     public TextMeshProUGUI gemText;
@@ -29,15 +30,23 @@ public class MintGemsManager : MonoBehaviour
             UpdateGemText();
         }
     }
+    [SerializeField] ulong ActiveChainId = 1868;
 
-    public void MintGems()
+    public async void MintGems(string addr)
     {
         Debug.Log("Minting Gems");
-        // Functionality to be implemented later
+        var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
+        string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
+        string amount = (gemCount % 5).ToString();
+        await contract.DropERC20_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,amount);
+        CurrencyManager.Instance.AddGems(gemCount);
+        gemCount = 5;
+        UpdateGemText();
     }
 
     void UpdateGemText()
     {
         gemText.text = gemCount.ToString();
     }
+}
 }
