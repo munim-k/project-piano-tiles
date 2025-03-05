@@ -12,52 +12,26 @@ namespace Thirdweb.Unity
     public class ConnectWallet : MonoBehaviour
     {
         private string _address;
-        private ChainData _currentChainData;
+        //private ChainData _currentChainData;
 
         private void Start()
         {
-            _currentChainData = ThirdwebManager.Instance.supportedChains.Find(x => x.identifier == ThirdwebManager.Instance.activeChain);
+            //_currentChainData = ThirdwebManager.Instance.supportedChains.Find(x => x.identifier == ThirdwebManager.Instance.activeChain);
         }
 
         public async void onClick()
         {
-            var wc = new WalletConnection(provider: WalletProvider.WalletConnect, chainId: BigInteger.Parse(_currentChainData.chainId));
-            await Connect(wc);
-        }
-
-        private async Task Connect(WalletConnection wc)
-        {
-            Debug.Log($"Connecting to {wc.provider}...");
-
-            await Task.Delay(500);
-
-            try
+            var options = new WalletOptions(provider: WalletProvider.MetaMaskWallet, chainId: 1);
+            var wallet = await ThirdwebManager.Instance.ConnectWallet(options);
+            if(wallet != null)
             {
-                _address = await ThirdwebManager.Instance.SDK.wallet.Connect(wc);
-                if (!string.IsNullOrEmpty(_address))
-                {
-                    PostConnect();
-                }
-                else
-                {
-                    Debug.LogError("Wallet Connection Failed!");
-                }
-            }
-            catch (Exception e)
-            {
-                _address = null;
-                Debug.LogError($"Failed to connect: {e}");
+                Debug.Log("Connected to wallet: " + wallet);
             }
         }
 
         private async void PostConnect()
         {
             Debug.Log($"Connected to {_address}");
-
-            var bal = await ThirdwebManager.Instance.SDK.wallet.GetBalance();
-            var balStr = $"{bal.value.ToEth()} {bal.symbol}";
-            Debug.Log($"Balance: {balStr}");
-
             SceneManager.LoadScene("Loading");
         }
     }

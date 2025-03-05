@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Thirdweb.Unity;
+using System.Threading.Tasks;
 
+namespace Thirdweb.Unity{
 public class Missions : MonoBehaviour
 {
     string[] contracts = new string[6] {
@@ -11,6 +14,8 @@ public class Missions : MonoBehaviour
         "Test",
         "Test"
     };
+
+    [SerializeField] ulong ActiveChainId = 11155111;
 
     [SerializeField] MissionButton[] claimButtons = new MissionButton[5];
 
@@ -30,8 +35,12 @@ public class Missions : MonoBehaviour
         }
     }
 
-    public void ClaimLevel1() {
-        Debug.Log("Claimed Level 1");
+    public async Task ClaimLevel1(string addr) {
+        Debug.Log("Claiming Level 1");
+        var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
+        if(balance == 0){
+            
+        }
         claimed[0] = true;
         claimButtons[0].Setup(claimed[0], LevelManager.Instance.levelsCompleted[0], 0);
     }
@@ -82,4 +91,5 @@ public class Missions : MonoBehaviour
     }
 
 
+}
 }
