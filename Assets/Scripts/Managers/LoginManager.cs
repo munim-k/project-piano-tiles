@@ -79,7 +79,15 @@ public class LoginManager : MonoBehaviour
         Debug.Log("Initiating sign-in...");
         try
         {
+            if (PlayerAccountService.Instance == null)
+            {
+                Debug.LogError("PlayerAccountService.Instance is null.");
+                return;
+            }
+
+            Debug.Log("PlayerAccountService.Instance is not null. Starting sign-in...");
             await PlayerAccountService.Instance.StartSignInAsync();
+            Debug.Log("Sign-in initiated successfully.");
         }
         catch (Exception ex)
         {
@@ -91,8 +99,22 @@ public class LoginManager : MonoBehaviour
     {
         try
         {
+            if (PlayerAccountService.Instance == null)
+            {
+                Debug.LogError("PlayerAccountService.Instance is null.");
+                return;
+            }
+
             var accessToken = PlayerAccountService.Instance.AccessToken;
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                Debug.LogError("AccessToken is null or empty.");
+                return;
+            }
+
+            Debug.Log("AccessToken retrieved successfully. Signing in with Unity...");
             await SignInWithUnityAsync(accessToken);
+            Debug.Log("Signed in with Unity successfully.");
         }
         catch (Exception ex)
         {
@@ -104,13 +126,21 @@ public class LoginManager : MonoBehaviour
     {
         try
         {
+            if (AuthenticationService.Instance == null)
+            {
+                Debug.LogError("AuthenticationService.Instance is null.");
+                return;
+            }
+
+            Debug.Log("AuthenticationService.Instance is not null. Signing in with Unity...");
             await AuthenticationService.Instance.SignInWithUnityAsync(accessToken);
             Debug.Log("Unity Authentication successful!");
 
             playerInfo = AuthenticationService.Instance.PlayerInfo;
             var name = await AuthenticationService.Instance.GetPlayerNameAsync();
-                SceneManager.LoadScene("login");
-                    }
+            Debug.Log("Player name retrieved: " + name);
+            SceneManager.LoadScene("login");
+        }
         catch (AuthenticationException ex)
         {
             Debug.LogError("Unity Authentication failed: " + ex.Message);
