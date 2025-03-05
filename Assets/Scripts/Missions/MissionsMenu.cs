@@ -38,9 +38,7 @@ public class Missions : MonoBehaviour
     public async Task ClaimLevel1(string addr) {
         Debug.Log("Claiming Level 1");
         var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
-        if(balance == 0){
-            
-        }
+        contract.ERC721_ClaimTo("",1);
         claimed[0] = true;
         claimButtons[0].Setup(claimed[0], LevelManager.Instance.levelsCompleted[0], 0);
     }
