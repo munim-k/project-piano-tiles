@@ -37,8 +37,8 @@ public class MintGemsManager : MonoBehaviour
         Debug.Log("Minting Gems");
         var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
         string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
-        string amount = (gemCount % 5).ToString();
-        await contract.DropERC20_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,amount);
+        int amount = (gemCount / 5);
+        await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,amount);
         CurrencyManager.Instance.AddGems(gemCount);
         gemCount = 5;
         UpdateGemText();
