@@ -161,7 +161,7 @@ public class LevelManager : MonoBehaviour
     }
     private void Start()
     {
-        InitializeGameData();
+        //InitializeGameData();
     }
     private async Task InitializeGameData()
     {
