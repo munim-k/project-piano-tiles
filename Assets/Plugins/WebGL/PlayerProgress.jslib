@@ -1,11 +1,11 @@
 mergeInto(LibraryManager.library, {
     SetCookie: function (key, value, days) {
-        var parsedDays = Pointer_stringify(days);
-        var parsedKey = Pointer_stringify(key);
-        var parsedValue = Pointer_stringify(value);
+        var parsedKey = UTF8ToString(key);
+        var parsedValue = UTF8ToString(value);
+        var parsedDays = days; // No need to stringify an integer
 
         var expires = "";
-        if (days) {
+        if (parsedDays) {
             var date = new Date();
             date.setTime(date.getTime() + (parsedDays * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
@@ -14,16 +14,16 @@ mergeInto(LibraryManager.library, {
     },
 
     GetCookie: function (key) {
-        var parsedKey = Pointer_stringify(key);
+        var parsedKey = UTF8ToString(key);
 
         var nameEQ = parsedKey + "=";
         var ca = document.cookie.split(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i].trim();
             if (c.indexOf(nameEQ) == 0) {
-                return decodeURIComponent(c.substring(nameEQ.length, c.length));
+                return allocateUTF8(decodeURIComponent(c.substring(nameEQ.length, c.length)));
             }
         }
-        return "";
+        return allocateUTF8(""); // Return an empty string if key is not found
     }
 });
