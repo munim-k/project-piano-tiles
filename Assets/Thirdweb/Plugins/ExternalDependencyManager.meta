@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Thirdweb/Plugins/ExternalDependencyManager.meta
 guid: 6736eece8dace1445ae229cbff035247
+========
+guid: 0d4a107c896907b47889934182e89eb6
+>>>>>>>> 55495ea5c04586a70340dec3dfc6f02bc688a957:Assets/Thirdweb/Plugins/ThreadingPatcher.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

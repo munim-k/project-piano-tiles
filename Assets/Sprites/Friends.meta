@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Sprites/Friends.meta
 guid: ac1bb438b12026fe6ab7ffd68f38f5c8
+========
+guid: 6736eece8dace1445ae229cbff035247
+>>>>>>>> 55495ea5c04586a70340dec3dfc6f02bc688a957:Assets/Thirdweb/Plugins/ExternalDependencyManager.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
