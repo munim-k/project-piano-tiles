@@ -1300,8 +1300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c599685941c20d4cabb81a22bed34c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelsUnlocked: 000000000000
-  levelsCompleted: 000000000000
+  levelsUnlocked: 010101010101
+  levelsCompleted: 010101010101
   level: 0
 --- !u!4 &396921298
 Transform:
@@ -5406,7 +5406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5525994910934317701, guid: d7bfbd5d09b4814268247f78af38b2ab, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5525994910934317701, guid: d7bfbd5d09b4814268247f78af38b2ab, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using Thirdweb.Unity;
 using System.Threading.Tasks;
 
@@ -84,15 +85,24 @@ public class Missions : MonoBehaviour
 
     [SerializeField] Sprite claimButtonSprite;
     [SerializeField] Image claimButtonImg;
-    public async void ClaimFinalReward(string addr) {
-        Debug.Log("Claimed Final Reward");
-        claimed[5] = true;
-        claimButtonImg.sprite = claimButtonSprite;
-         var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
-        string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
-        await contract.DropERC20_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,"15");
-        //yahaan pe acs currency kam karwani hai
-    }
+    public void ClaimFinalReward()
+        {
+            Debug.Log("🔹 Claiming ACS Points...");
+
+            var nonce = ACSManager.Instance.GenerateNonce();
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            
+            Debug.Log($"✅ Nonce: {nonce}");
+            Debug.Log($"✅ Timestamp: {timestamp}");
+
+            string userAddress = ThirdwebManager.Instance.GetActiveWallet().GetAddress().Result;
+            string description = "Test";
+            string itemsJson = $"[{{\"userAddress\":\"{userAddress}\",\"defiId\":{ACSManager.Instance.defiID},\"acsAmount\":{ACSManager.Instance.acsAmountToTransfer},\"description\":\"{description}\"}}]";
+
+            // ✅ Call JavaScript to generate signature
+            ACSManager.Instance.GenerateSignature(itemsJson, timestamp, nonce);
+        }
+
 
 
     [SerializeField] GameObject bottomBarManager;
