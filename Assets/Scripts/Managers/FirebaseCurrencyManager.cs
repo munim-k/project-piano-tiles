@@ -33,15 +33,6 @@ public class FirebaseCurrencyManager : MonoBehaviour
         }
     }
 
-    // public void GetJSON() =>
-    //         FirebaseDatabase.GetJSON(pathInputField.text, gameObject.name, "DisplayData", "DisplayErrorObject");
-
-    // public void PostJSON() => FirebaseDatabase.PostJSON(pathInputField.text, valueInputField.text, gameObject.name,
-    //     "DisplayInfo", "DisplayErrorObject");
-
-    // public void PushJSON() => FirebaseDatabase.PushJSON(pathInputField.text, valueInputField.text, gameObject.name,
-    //     "DisplayInfo", "DisplayErrorObject");
-
     private void SetCurrencyBalances()
     {
         FirebaseDatabase.PostJSON("stars", stars.ToString(), gameObject.name, "DisplayInfo", "DisplayErrorObject");
@@ -51,8 +42,8 @@ public class FirebaseCurrencyManager : MonoBehaviour
     {
         try
         {
-            FirebaseDatabase.GetJSON("stars", gameObject.name, "DisplayData", "DisplayErrorObject");
-            FirebaseDatabase.GetJSON("coins", gameObject.name, "DisplayData", "DisplayErrorObject");
+            FirebaseDatabase.GetJSON("stars", gameObject.name, "DisplayStarData", "DisplayErrorObject");
+            FirebaseDatabase.GetJSON("coins", gameObject.name, "DisplayCoinData", "DisplayErrorObject");
         }
         catch (System.Exception e)
         {
@@ -64,28 +55,28 @@ public class FirebaseCurrencyManager : MonoBehaviour
     {
         coins += amount;
         coinText.text = coins.ToString();
-        PlayerPrefs.SetInt("Coins", coins);
+        SetCurrencyBalances();
     }
 
     public void AddStars(int amount)
     {
         stars += amount;
         starText.text = stars.ToString();
-        PlayerPrefs.SetInt("Stars", stars);
+        SetCurrencyBalances();
     }
 
     public void RemoveCoins(int amount)
     {
         coins -= amount;
         coinText.text = coins.ToString();
-        PlayerPrefs.SetInt("Coins", coins);
+        SetCurrencyBalances();
     }
 
     public void RemoveStars(int amount)
     {
         stars -= amount;
         starText.text = stars.ToString();
-        PlayerPrefs.SetInt("Stars", stars);
+        SetCurrencyBalances();
     }
 
     public int GetCoins()
@@ -100,11 +91,16 @@ public class FirebaseCurrencyManager : MonoBehaviour
 
 
     #region Helpers
-    public void DisplayData(string data)
-        {
-            Debug.Log(data);
-            coinText.text = data;
-        }
+    public void DisplayCoinData(string data)
+    {
+        Debug.Log(data);
+        coinText.text = data;
+    }
+    public void DisplayStarData(string data)
+    {
+        Debug.Log(data);
+        starText.text = data;
+    }
 
         public void DisplayInfo(string info)
         {
