@@ -24,9 +24,9 @@ public class Missions : MonoBehaviour
     void Start() {
         //load karwa claimed etc firebase se
         for (int i = 0; i < 5; i++) {
-            claimButtons[i].Setup(false, LevelManager.Instance.levelsCompleted[i], i);
+            claimButtons[i].Setup(false, FirebaseLevelManager.Instance.levelsCompleted[i], i);
         }
-        if (LevelManager.Instance.levelsCompleted[5]) {
+        if (FirebaseLevelManager.Instance.levelsCompleted[5]) {
             claimButtonImg.sprite = claimButtonSprite;
         } else {
             ColorBlock block = claimButtonImg.GetComponent<Button>().colors;
@@ -43,7 +43,7 @@ public class Missions : MonoBehaviour
         string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[0] = true;
-        claimButtons[0].Setup(claimed[0], LevelManager.Instance.levelsCompleted[0], 0);
+        claimButtons[0].Setup(claimed[0], FirebaseLevelManager.Instance.levelsCompleted[0], 0);
     }
 
     public async void ClaimLevel2(string addr) {
@@ -52,7 +52,7 @@ public class Missions : MonoBehaviour
         string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[1] = true;
-        claimButtons[1].Setup(claimed[1], LevelManager.Instance.levelsCompleted[1], 1);
+        claimButtons[1].Setup(claimed[1], FirebaseLevelManager.Instance.levelsCompleted[1], 1);
     }
 
     public async void ClaimLevel3(string addr) {
@@ -61,7 +61,7 @@ public class Missions : MonoBehaviour
         string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[2] = true;
-        claimButtons[2].Setup(claimed[2], LevelManager.Instance.levelsCompleted[2], 2);
+        claimButtons[2].Setup(claimed[2], FirebaseLevelManager.Instance.levelsCompleted[2], 2);
     }
 
     public async void ClaimLevel4(string addr) {
@@ -70,7 +70,7 @@ public class Missions : MonoBehaviour
         string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[3] = true;
-        claimButtons[3].Setup(claimed[3], LevelManager.Instance.levelsCompleted[3], 3);
+        claimButtons[3].Setup(claimed[3], FirebaseLevelManager.Instance.levelsCompleted[3], 3);
     }
 
     public async void ClaimLevel5(string addr) {
@@ -79,7 +79,7 @@ public class Missions : MonoBehaviour
         string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[4] = true;
-        claimButtons[4].Setup(claimed[4], LevelManager.Instance.levelsCompleted[4], 4);
+        claimButtons[4].Setup(claimed[4], FirebaseLevelManager.Instance.levelsCompleted[4], 4);
     }
 
     [SerializeField] Sprite claimButtonSprite;

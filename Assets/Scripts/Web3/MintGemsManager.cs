@@ -39,7 +39,7 @@ public class MintGemsManager : MonoBehaviour
         string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
         int amount = (gemCount / 5);
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,amount);
-        CurrencyManager.Instance.AddGems(gemCount);
+        FirebaseCurrencyManager.Instance.AddStars(gemCount);
         gemCount = 5;
         UpdateGemText();
     }

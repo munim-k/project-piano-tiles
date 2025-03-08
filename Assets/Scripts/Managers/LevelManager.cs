@@ -181,10 +181,10 @@ public class LevelManager : MonoBehaviour
         await saveData();
     }
 
-    public void testing(){
-        // saveData();
-        LoadGameData();
-    }
+    // public void testing(){
+    //     // saveData();
+    //     LoadGameData();
+    // }
 
    
 

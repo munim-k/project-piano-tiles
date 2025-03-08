@@ -513,8 +513,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce2cb1e7a101bfde853523cef8eab20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tokens: 0
-  stars: 0
   tokenText: {fileID: 1523853449}
   starText: {fileID: 918472550}
 --- !u!114 &171934093
@@ -529,7 +527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31ea94c255f7731448c09f1574561020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coins: 0
+  tokens: 0
   stars: 0
   coinText: {fileID: 1523853449}
   starText: {fileID: 918472550}
@@ -1431,6 +1429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 396921298}
   - component: {fileID: 396921297}
+  - component: {fileID: 396921299}
   m_Layer: 0
   m_Name: LeveManager
   m_TagString: Untagged
@@ -1445,7 +1444,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396921296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c599685941c20d4cabb81a22bed34c8c, type: 3}
   m_Name: 
@@ -1468,6 +1467,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &396921299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396921296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91eab6e4fd8108eba5dacdbb9ca3ebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelsUnlocked: 000000000000
+  levelsCompleted: 000000000000
+  level: 0
 --- !u!1 &474635047 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 546285107455863069, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}

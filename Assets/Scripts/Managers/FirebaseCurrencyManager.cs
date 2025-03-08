@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class FirebaseCurrencyManager : MonoBehaviour
 {
-    [SerializeField] int coins;
+    [SerializeField] int tokens;
     [SerializeField] int stars;
 
     [SerializeField] TMPro.TextMeshProUGUI coinText;
@@ -18,11 +18,7 @@ public class FirebaseCurrencyManager : MonoBehaviour
     {
         if (Application.platform != RuntimePlatform.WebGLPlayer)
             DisplayError("The code is not running on a WebGL build; as such, the Javascript functions will not be recognized.");
-        coins = 100;
-        coinText.text = coins.ToString();
-        starText.text = stars.ToString();
         
-        SetCurrencyBalances();
         if (Instance == null)
         {
             Instance = this;
@@ -31,19 +27,17 @@ public class FirebaseCurrencyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        FetchCurrencyBalances();
     }
 
-    private void SetCurrencyBalances()
-    {
-        FirebaseDatabase.PostJSON("stars", stars.ToString(), gameObject.name, "DisplayInfo", "DisplayErrorObject");
-        FirebaseDatabase.PostJSON("coins", coins.ToString(), gameObject.name, "DisplayInfo", "DisplayErrorObject");
-    }
+    // INITIALIZATION
+
     public void FetchCurrencyBalances()
     {
         try
         {
-            FirebaseDatabase.GetJSON("stars", gameObject.name, "DisplayStarData", "DisplayErrorObject");
-            FirebaseDatabase.GetJSON("coins", gameObject.name, "DisplayCoinData", "DisplayErrorObject");
+            FirebaseDatabase.GetJSON($"users/{firebaseManager.idToken}", gameObject.name, nameof(SetUserData), nameof(DisplayErrorObject));
         }
         catch (System.Exception e)
         {
@@ -51,24 +45,70 @@ public class FirebaseCurrencyManager : MonoBehaviour
         }
     }
 
-    public void AddCoins(int amount)
+    private void SetCurrencyBalances()
     {
-        coins += amount;
-        coinText.text = coins.ToString();
+        SetTokens(tokens);
+        SetStars(stars);
+    }
+
+    public void SetUserData(string data) {
+        var userData = StringSerializationAPI.Deserialize(typeof(UserData), data) as UserData;
+        tokens = userData.tokens;
+        stars = userData.stars;
+        coinText.text = tokens.ToString();
+        starText.text = stars.ToString();
+    }
+
+
+    // TOKENS
+    public int GetCoins()
+    {
+        return tokens;
+    }
+
+    private void SetTokens(int tokens)
+    {
+        if (tokens >= 0) {
+            this.tokens = tokens;
+            FirebaseDatabase.PostJSON($"users/{firebaseManager.idToken}/tokens", tokens.ToString(), gameObject.name, "DisplayInfo", "DisplayErrorObject");
+        }
+    }
+
+    public void AddTokens(int amount)
+    {
+        tokens += amount;
+        coinText.text = tokens.ToString();
         SetCurrencyBalances();
     }
 
+    public void RemoveTokens(int amount)
+    {
+        tokens -= amount;
+        coinText.text = tokens.ToString();
+        SetCurrencyBalances();
+    }
+
+
+
+    // STARS
+
+    public int GetStars()
+    {
+        return stars;
+    }
+
+    private void SetStars(int stars)
+    {
+        if (stars >= 0) {
+            this.stars = stars;
+            FirebaseDatabase.PostJSON($"users/{firebaseManager.idToken}/stars", stars.ToString(), gameObject.name, "DisplayInfo", "DisplayErrorObject");
+        }
+    }
+   
     public void AddStars(int amount)
     {
         stars += amount;
         starText.text = stars.ToString();
-        SetCurrencyBalances();
-    }
-
-    public void RemoveCoins(int amount)
-    {
-        coins -= amount;
-        coinText.text = coins.ToString();
         SetCurrencyBalances();
     }
 
@@ -79,43 +119,23 @@ public class FirebaseCurrencyManager : MonoBehaviour
         SetCurrencyBalances();
     }
 
-    public int GetCoins()
-    {
-        return coins;
-    }
-
-    public int GetStars()
-    {
-        return stars;
-    }
-
 
     #region Helpers
-    public void DisplayCoinData(string data)
+
+    public void DisplayInfo(string info)
     {
-        Debug.Log(data);
-        coinText.text = data;
-    }
-    public void DisplayStarData(string data)
-    {
-        Debug.Log(data);
-        starText.text = data;
+        Debug.Log(info);
     }
 
-        public void DisplayInfo(string info)
-        {
-            Debug.Log(info);
-        }
+    public void DisplayErrorObject(string error)
+    {
+        var parsedError = StringSerializationAPI.Deserialize(typeof(FirebaseError), error) as FirebaseError;
+        DisplayError(parsedError.message);
+    }
 
-        public void DisplayErrorObject(string error)
-        {
-            var parsedError = StringSerializationAPI.Deserialize(typeof(FirebaseError), error) as FirebaseError;
-            DisplayError(parsedError.message);
-        }
-
-        public void DisplayError(string error)
-        {
-            Debug.LogError(error);
-        }
+    public void DisplayError(string error)
+    {
+        Debug.LogError(error);
+    }
     #endregion
 }
