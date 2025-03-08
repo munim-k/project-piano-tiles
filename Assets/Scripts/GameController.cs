@@ -96,21 +96,26 @@ public class GameController : MonoBehaviour
         }
     }
 
+    [SerializeField] Transform bgTransform;
     private void SetDataForNoteGeneration()
     {
+        var backgroundWidth = bgTransform.GetComponent<SpriteRenderer>().bounds.size.x;
+        var backgroundHeight = bgTransform.GetComponent<SpriteRenderer>().bounds.size.y;
+
         var topRight = new Vector3(Screen.width, Screen.height, 0);
         var topRightWorldPoint = Camera.main.ScreenToWorldPoint(topRight);
         var bottomLeftWorldPoint = Camera.main.ScreenToWorldPoint(Vector3.zero);
         var screenWidth = topRightWorldPoint.x - bottomLeftWorldPoint.x;
         var screenHeight = topRightWorldPoint.y - bottomLeftWorldPoint.y;
         noteHeight = screenHeight / 4;
-        noteWidth = screenWidth / 4;
+        noteWidth = backgroundWidth / 4;
         var noteSpriteRenderer = notePrefab.GetComponent<SpriteRenderer>();
         noteLocalScale = new Vector3(
             noteWidth / noteSpriteRenderer.bounds.size.x * noteSpriteRenderer.transform.localScale.x,
             noteHeight / noteSpriteRenderer.bounds.size.y * noteSpriteRenderer.transform.localScale.y, 1);
-        noteLocalScale.x = 2;
+        // noteLocalScale.x = 2;
         var leftmostPoint = Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height / 2));
+        leftmostPoint.x = backgroundWidth / 2 * -1;
         var leftmostPointPivot = leftmostPoint.x + noteWidth / 2;
         noteSpawnStartPosX = leftmostPointPivot;
     }
@@ -173,16 +178,27 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
     public void SpawnNotes()
 {
     noteSpawnStartPosY = lastSpawnedNote != null ? lastSpawnedNote.position.y + noteHeight : 0;
-    Note note = Instantiate(notePrefab, noteContainer.transform);
-    note.transform.localScale = noteLocalScale;
 
     // Get the correct column from the noteColumns list
     int column = noteColumns[noteIndex]; 
-    note.transform.position = new Vector2(noteSpawnStartPosX + noteWidth * column, noteSpawnStartPosY);
 
-    note.Id = lastNoteId;
-    lastNoteId++;
-    lastSpawnedNote = note.transform;
+    for (int i = 0; i < 4; i++) {
+        Note note = Instantiate(notePrefab, noteContainer.transform);
+        note.transform.localScale = noteLocalScale;
+
+        note.transform.position = new Vector2(noteSpawnStartPosX + noteWidth * i, noteSpawnStartPosY);
+
+        if (i == column) {
+            note.Visible = true;
+
+            note.Id = lastNoteId;
+            lastNoteId++;
+            lastSpawnedNote = note.transform;
+        } else {
+            note.Visible = false;
+        }
+    }
+
 }
 
 

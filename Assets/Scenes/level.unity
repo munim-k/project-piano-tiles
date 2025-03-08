@@ -1460,6 +1460,7 @@ MonoBehaviour:
   noteContainer: {fileID: 473242142}
   audioSource: {fileID: 0}
   midiFile: {fileID: 0}
+  bgTransform: {fileID: 14201282}
 --- !u!114 &2011994419
 MonoBehaviour:
   m_ObjectHideFlags: 0
