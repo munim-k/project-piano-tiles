@@ -1,5 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
+using UnityEngine.UI;
+
+enum ConnectOptions{
+    METAMASK_EXTENSION,
+    QR_CODE,
+}
 
 namespace Thirdweb.Unity
 {
@@ -7,39 +14,52 @@ namespace Thirdweb.Unity
     {
         private string _address;
         private bool WebglForceMetamaskExtension = false;
-        //private ChainData _currentChainData;
+
+        [SerializeField] Button _connectButton;
+
+        [DllImport("__Internal")]
+        private static extern bool IsMobile();
 
         private void Start()
         {
-            //_currentChainData = ThirdwebManager.Instance.supportedChains.Find(x => x.identifier == ThirdwebManager.Instance.activeChain);
+            _connectButton.onClick.RemoveAllListeners();
+            #if !UNITY_EDITOR && UNITY_WEBGL
+            {
+            if(IsMobile()){
+                _connectButton.onClick.AddListener(() => onClick(GetWalletOptions(ConnectOptions.QR_CODE)));
+            }else{
+                _connectButton.onClick.AddListener(() => onClick(GetWalletOptions(ConnectOptions.METAMASK_EXTENSION)));
+            }
+            }
+            #else
+            {
+                _connectButton.onClick.AddListener(() => onClick(GetWalletOptions(ConnectOptions.QR_CODE)));
+            }
+            #endif
         }
 
-        public async void onClick()
+        WalletOptions GetWalletOptions(ConnectOptions connectOptions)
         {
-            CookieManager.Instance.SaveProgress("wallet", "was connecting");
-            var options = new WalletOptions(provider: WalletProvider.MetaMaskWallet, chainId: 1868);
+            switch(connectOptions)
+            {
+                case ConnectOptions.METAMASK_EXTENSION:
+                    return new WalletOptions(provider: WalletProvider.MetaMaskWallet, chainId: 1868);
+                case ConnectOptions.QR_CODE:
+                    var externalWalletProvider = Application.platform == RuntimePlatform.WebGLPlayer && WebglForceMetamaskExtension ? WalletProvider.MetaMaskWallet : WalletProvider.WalletConnectWallet;
+                    return new WalletOptions(provider: externalWalletProvider, chainId: 1868);
+                default:
+                    return new WalletOptions(provider: WalletProvider.MetaMaskWallet, chainId: 1868);
+            }
+        }
+
+        async void onClick(WalletOptions options)
+        {            
             var wallet = await ThirdwebManager.Instance.ConnectWallet(options);
-            if(wallet != null)
-            {
-                Debug.Log("Connected to wallet: " + wallet);
-                PostConnect();
-            }
+            PostConnect();
         }
 
-        public void onClickWalletConnectWallet(){
-            var externalWalletProvider = Application.platform == RuntimePlatform.WebGLPlayer && WebglForceMetamaskExtension ? WalletProvider.MetaMaskWallet : WalletProvider.WalletConnectWallet;
-            var options =  new WalletOptions(provider: externalWalletProvider, chainId: 1868);
-            var wallet = ThirdwebManager.Instance.ConnectWallet(options);
-            if(wallet != null)
-            {
-                Debug.Log("Connected to wallet: " + wallet);
-                PostConnect();
-            }
-        }
-
-        private void PostConnect()
+        private async void PostConnect()
         {
-            Debug.Log($"Connected to {_address}");
             SceneManager.LoadScene("Loading");
         }
     }

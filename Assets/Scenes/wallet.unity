@@ -696,6 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19677ecc073e48f1a5ab6514763f3d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _connectButton: {fileID: 1753148957}
 --- !u!4 &743062169
 Transform:
   m_ObjectHideFlags: 0
@@ -927,7 +928,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1141337429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1124,19 +1125,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1753148958}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 743062168}
-        m_TargetAssemblyTypeName: Thirdweb.Unity.ConnectWallet, Assembly-CSharp
-        m_MethodName: onClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1753148958
 MonoBehaviour:
   m_ObjectHideFlags: 0
