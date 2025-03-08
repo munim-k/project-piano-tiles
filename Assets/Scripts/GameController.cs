@@ -36,11 +36,13 @@ public class GameController : MonoBehaviour
     public AudioSource audioSource;
     public ReactiveProperty<bool> ShowGameOverScreen { get; set; }
     public bool PlayerWon { get; set; } = false;
+   // public float noteSpawnStartPosY
 
     // MIDI Variables
     public TextAsset midiFile;  // Assign MIDI file in the Unity Editor
     private List<float> noteTimings = new List<float>();
     private int noteIndex = 0;
+    public float playAudioWaitTime = 0.5f;
 
     private void Awake()
     {
@@ -75,6 +77,11 @@ public class GameController : MonoBehaviour
     private void StartGame()
     {
         GameController.Instance.GameStarted.Value = true;
+        Invoke("playAudio", playAudioWaitTime);
+        
+    }
+    private void playAudio()
+    {
         audioSource.Play();
     }
 
@@ -118,6 +125,7 @@ public class GameController : MonoBehaviour
         leftmostPoint.x = backgroundWidth / 2 * -1;
         var leftmostPointPivot = leftmostPoint.x + noteWidth / 2;
         noteSpawnStartPosX = leftmostPointPivot;
+        noteSpawnStartPosY = topRightWorldPoint.y+noteHeight;  
     }
 
     private List<int> noteColumns = new List<int>(); // Stores the column of each note
@@ -135,7 +143,7 @@ void LoadMidiFromBytes(byte[] midiBytes)
 
                 foreach (var note in notes)
                 {
-                    Debug.Log($"Note: {note.NoteName}, Time: {note.Time}");
+                   // Debug.Log($"Note: {note.NoteName}, Time: {note.Time}");
                     var metricTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
                     float noteTime = (float)metricTimeSpan.TotalSeconds;
                     noteTimings.Add(noteTime);
@@ -167,6 +175,12 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
         {
             float waitTime = noteIndex == 0 ? noteTimings[0] : noteTimings[noteIndex] - noteTimings[noteIndex - 1];
             waitTime = Mathf.Max(waitTime, 0); // Prevent negative wait times
+            Debug.Log($"Wait time: {waitTime}");
+            if(waitTime ==0)
+            {
+                noteIndex++;
+                continue;
+            }
 
             yield return new WaitForSeconds(waitTime);
             
@@ -177,7 +191,7 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
 
     public void SpawnNotes()
 {
-    noteSpawnStartPosY = lastSpawnedNote != null ? lastSpawnedNote.position.y + noteHeight : 0;
+    
 
     // Get the correct column from the noteColumns list
     int column = noteColumns[noteIndex]; 
@@ -197,8 +211,9 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
         } else {
             note.Visible = false;
         }
-    }
 
+    }
+    
 }
 
 
