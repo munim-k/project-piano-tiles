@@ -45,7 +45,7 @@ public class MintGemsManager : MonoBehaviour
         //await contract.DropERC20_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,amount);
         await contract.ERC20_Transfer(ThirdwebManager.Instance.GetActiveWallet(), toAddress, amount);
         //contract.erc20
-        CurrencyManager.Instance.AddGems(gemCount);
+        FirebaseCurrencyManager.Instance.AddStars(gemCount);
         gemCount = 5;
         UpdateGemText();
     }

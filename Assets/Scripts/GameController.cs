@@ -218,7 +218,7 @@ public class GameController : MonoBehaviour
         GameOver.Value = true;
         if (won) PlayerWon = true;
         audioSource.Stop();
-        CurrencyManager.Instance.AddTokens(Score.Value);
+        FirebaseCurrencyManager.Instance.AddTokens(Score.Value);
         yield return new WaitForSeconds(1); // Short delay before showing the game over screen
         ShowGameOverScreen.Value = true;
     }

@@ -16,14 +16,14 @@ public class GameOverScreen : MonoBehaviour
         {
             visibility.Visible = true;
 
-            int level = LevelManager.Instance.level + 1;
+            int level = FirebaseLevelManager.Instance.level + 1;
             int score = GameController.Instance.Score.Value;
 
             if (GameController.Instance.PlayerWon)
             {
                 wonModal.gameObject.SetActive(true);
                 wonModal.Show(score, score, level);
-                LevelManager.Instance.levelsCompleted[level] = true;
+                FirebaseLevelManager.Instance.CompleteLevel(level);
             }
             else
             {

@@ -12,7 +12,7 @@ public class LevelSelection : MonoBehaviour
     private AudioSource levelMusicSource;
 
     [SerializeField] TextMeshProUGUI levelText;
-    // int currentLevel = 0; // Now stored in LevelManager
+    // int currentLevel = 0; // Now stored in FirebaseLevelManager
 
     [SerializeField] int[] prices = {5, 20, 25, 30, 37, 45};
     [SerializeField] public Color[] colors = {
@@ -26,11 +26,11 @@ public class LevelSelection : MonoBehaviour
 
     void Start()
     {
-        int currentLevel = LevelManager.Instance.level;
+        int currentLevel = FirebaseLevelManager.Instance.level;
         levelMusicSource = levelMusic.Instance.GetComponent<AudioSource>();
         levelMusicSource.clip = buttonClickSound[currentLevel];
         levelText.text = $"Level 0{currentLevel+1}";
-        SpawnLevelButtons(LevelManager.LEVELS);
+        SpawnLevelButtons(FirebaseLevelManager.LEVELS);
     }
 
     private void SpawnLevelButtons(int levels)
@@ -52,7 +52,7 @@ public class LevelSelection : MonoBehaviour
             LevelSelectButton lsb = buttonObj.GetComponent<LevelSelectButton>();
             if (lsb != null)
             {
-                lsb.SetLevel(i, prices[i], LevelManager.Instance.levelsUnlocked[i], colors[i]);
+                lsb.SetLevel(i, prices[i], FirebaseLevelManager.Instance.levelsUnlocked[i], colors[i]);
             }
             
             // Safely get audio clip
@@ -62,7 +62,7 @@ public class LevelSelection : MonoBehaviour
                 clip = buttonClickSound[i];
             }
             
-            if (LevelManager.Instance.levelsUnlocked[i])
+            if (FirebaseLevelManager.Instance.levelsUnlocked[i])
             {
                 button.onClick.AddListener(() => LoadLevel(levelIndex, clip));
             }
@@ -75,7 +75,7 @@ public class LevelSelection : MonoBehaviour
 
     private void BuyLevel(int levelIndex) {
         int price = prices[levelIndex];
-        if (CurrencyManager.Instance.GetGems() >= price) {
+        if (FirebaseCurrencyManager.Instance.GetStars() >= price) {
             // TODO: Show confirm dialog
             // ShowConfirm(levelIndex, price); 
 
@@ -98,8 +98,8 @@ public class LevelSelection : MonoBehaviour
     private void ConfirmPurchase(int levelIndex, int price) {
         if (confirmUI)
             confirmUI.SetActive(false);
-        CurrencyManager.Instance.RemoveGems(price);
-        LevelManager.Instance.levelsUnlocked[levelIndex] = true;
+        FirebaseCurrencyManager.Instance.RemoveStars(price);
+        FirebaseLevelManager.Instance.UnlockLevel(levelIndex);
 
         // Update button
         GameObject buttonObj = contentTransform.Find($"Level_{levelIndex}_Button").gameObject;
@@ -125,7 +125,7 @@ public class LevelSelection : MonoBehaviour
             levelMusicSource.clip = buttonClickSound;
         }
 
-        LevelManager.Instance.level = levelNumber;
+        FirebaseLevelManager.Instance.level = levelNumber;
         int currentLevel = levelNumber + 1;
 
         levelText.text = $"Level 0{currentLevel}";
