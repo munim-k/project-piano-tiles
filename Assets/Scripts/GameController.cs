@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
+using Melanchall.DryWetMidi.Core;
+using Melanchall.DryWetMidi.Interaction;
+using System.IO;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance { get; private set; }
-
+    public midiFIlesContainer midiFilesContainer;
+    
     public Transform lastSpawnedNote;
-    private float prevRandomIndex = -1;
     private int lastNoteId = 1;
 
     public Note notePrefab;
@@ -21,28 +26,21 @@ public class GameController : MonoBehaviour
     private float noteSpawnStartPosY;
 
     public float noteSpeed = 5f;
-
     public Transform noteContainer;
 
     public ReactiveProperty<bool> GameStarted { get; set; }
     public ReactiveProperty<bool> GameOver { get; set; }
     public ReactiveProperty<int> Score { get; set; }
     public int LastPlayedNoteId { get; set; } = 0;
+
     public AudioSource audioSource;
-    private float songSegmentLength = 0.8f;
     public ReactiveProperty<bool> ShowGameOverScreen { get; set; }
     public bool PlayerWon { get; set; } = false;
 
-    // New variables for beat detection
-    private float[] audioSamples;
-    private int sampleRate;
-    private int samplesPerBeat;
-    private int nextBeatSample;
-    private bool isBeatDetected;
-
-    [SerializeField] float bpm = 120f;
-
-    [SerializeField] float seed; // For generating consistent random numbers
+    // MIDI Variables
+    public TextAsset midiFile;  // Assign MIDI file in the Unity Editor
+    private List<float> noteTimings = new List<float>();
+    private int noteIndex = 0;
 
     private void Awake()
     {
@@ -56,8 +54,11 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        midiFilesContainer = FindAnyObjectByType<midiFIlesContainer>();
+        
         SetDataForNoteGeneration();
-        InitializeBeatDetection();
+        LoadMidiFromBytes(midiFilesContainer.midiData1);
+        StartCoroutine(SpawnNotesOnMidi());
         StartGame();
     }
 
@@ -74,7 +75,6 @@ public class GameController : MonoBehaviour
     private void StartGame()
     {
         GameController.Instance.GameStarted.Value = true;
-        StartCoroutine(SpawnNotesOnBeat());
         audioSource.Play();
     }
 
@@ -107,111 +107,84 @@ public class GameController : MonoBehaviour
         noteWidth = screenWidth / 4;
         var noteSpriteRenderer = notePrefab.GetComponent<SpriteRenderer>();
         noteLocalScale = new Vector3(
-               noteWidth / noteSpriteRenderer.bounds.size.x * noteSpriteRenderer.transform.localScale.x,
-               noteHeight / noteSpriteRenderer.bounds.size.y * noteSpriteRenderer.transform.localScale.y, 1);
+            noteWidth / noteSpriteRenderer.bounds.size.x * noteSpriteRenderer.transform.localScale.x,
+            noteHeight / noteSpriteRenderer.bounds.size.y * noteSpriteRenderer.transform.localScale.y, 1);
+        noteLocalScale.x = 2;
         var leftmostPoint = Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height / 2));
         var leftmostPointPivot = leftmostPoint.x + noteWidth / 2;
         noteSpawnStartPosX = leftmostPointPivot;
     }
 
-    private void InitializeBeatDetection()
+    private List<int> noteColumns = new List<int>(); // Stores the column of each note
+
+
+void LoadMidiFromBytes(byte[] midiBytes)
     {
-        audioSamples = new float[audioSource.clip.samples * audioSource.clip.channels];
-        audioSource.clip.GetData(audioSamples, 0);
-        sampleRate = audioSource.clip.frequency;
-        samplesPerBeat = Mathf.FloorToInt((60f / bpm) * sampleRate);
-        noteSpeed = noteHeight / samplesPerBeat * sampleRate;
-        nextBeatSample = 0;
-        isBeatDetected = false;
-        seed = audioSamples.Length % 1000;
+        try
+        {
+            using (var stream = new MemoryStream(midiBytes))
+            {
+                var midiFileInstance = MidiFile.Read(stream);
+                var tempoMap = midiFileInstance.GetTempoMap();
+                var notes = midiFileInstance.GetNotes();
+
+                foreach (var note in notes)
+                {
+                    Debug.Log($"Note: {note.NoteName}, Time: {note.Time}");
+                    var metricTimeSpan = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
+                    float noteTime = (float)metricTimeSpan.TotalSeconds;
+                    noteTimings.Add(noteTime);
+
+                    // Assign column based on MIDI note
+                    int column = GetColumnFromMidiNote(note.NoteNumber);
+                    noteColumns.Add(column);
+                }
+
+                noteTimings.Sort();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error loading MIDI file: {e.Message}");
+        }
     }
 
-    private IEnumerator SpawnNotesOnBeat()
+
+private int GetColumnFromMidiNote(int midiNoteNumber)
+{
+    return midiNoteNumber % 4; // Maps MIDI notes to columns 0-3
+}
+
+
+    private IEnumerator SpawnNotesOnMidi()
     {
-        bool gameEnded = false;
-        bool hasStartedPlaying = false;
-        
-        while (!gameEnded)
+        while (noteIndex < noteTimings.Count)
         {
-            if (audioSource.isPlaying)
-            {
-                hasStartedPlaying = true;
-                int currentSample = audioSource.timeSamples;
+            float waitTime = noteIndex == 0 ? noteTimings[0] : noteTimings[noteIndex] - noteTimings[noteIndex - 1];
+            waitTime = Mathf.Max(waitTime, 0); // Prevent negative wait times
 
-                // Check for beat detection and spawn notes
-                if (currentSample >= nextBeatSample && !isBeatDetected)
-                {
-                    isBeatDetected = true;
-                    SpawnNotes();
-                    nextBeatSample += samplesPerBeat;
-                }
-                else if (currentSample < nextBeatSample - samplesPerBeat / 2)
-                {
-                    isBeatDetected = false;
-                }
-
-                // Debug logging to track variables
-                // Debug.Log($"Time remaining: {audioSource.clip.length - audioSource.time}, " +
-                //         $"LastPlayedNoteId: {LastPlayedNoteId}, " +
-                //         $"lastNoteId: {lastNoteId}");
-            }
-
-            // Only check end game conditions after audio has started playing at least once
-            if (hasStartedPlaying)
-            {
-                bool isNearEnd = audioSource.clip.length - audioSource.time <= songSegmentLength;
-                bool hasStoppedPlaying = !audioSource.isPlaying;
-                bool allNotesPlayed = LastPlayedNoteId >= lastNoteId - 1;
-
-                if ((isNearEnd || hasStoppedPlaying) && allNotesPlayed)
-                {
-                    Debug.Log("Ending game with victory condition");
-                    GameOver.Value = true;
-                    PlayerWon = true;
-                    audioSource.Stop();
-                    ShowGameOverScreen.Value = true;
-                    gameEnded = true;
-                    yield break;
-                }
-            }
-
-            yield return null;
+            yield return new WaitForSeconds(waitTime);
+            
+            SpawnNotes();
+            noteIndex++;
         }
     }
 
     public void SpawnNotes()
-    {
-        noteSpawnStartPosY = lastSpawnedNote.position.y + noteHeight;
-        Note note = null;
-        var randomIndex = GetRandomIndex();
-        for (int j = 0; j < 4; j++)
-        {
-            note = Instantiate(notePrefab, noteContainer.transform);
-            note.transform.localScale = noteLocalScale;
-            note.transform.position = new Vector2(noteSpawnStartPosX + noteWidth * j, noteSpawnStartPosY);
-            note.Visible = (j == randomIndex);
-            if (note.Visible)
-            {
-                note.Id = lastNoteId;
-                lastNoteId++;
-            }
-        }
-        noteSpawnStartPosY += noteHeight;
-        lastSpawnedNote = note.transform;
-    }
+{
+    noteSpawnStartPosY = lastSpawnedNote != null ? lastSpawnedNote.position.y + noteHeight : 0;
+    Note note = Instantiate(notePrefab, noteContainer.transform);
+    note.transform.localScale = noteLocalScale;
 
-    private int GetRandomIndex()
-    {
-        var randomIndex = (prevRandomIndex + seed) % 4;
-        seed *= 1.5f;
-        if (seed > 10000) seed = (seed * 0.5f) % 5;
-        if (randomIndex == prevRandomIndex)
-        {
-            randomIndex *= Mathf.Pow(-1, (int)seed);
-        }
-        prevRandomIndex = randomIndex;
-        return (int)randomIndex;
-    }
+    // Get the correct column from the noteColumns list
+    int column = noteColumns[noteIndex]; 
+    note.transform.position = new Vector2(noteSpawnStartPosX + noteWidth * column, noteSpawnStartPosY);
+
+    note.Id = lastNoteId;
+    lastNoteId++;
+    lastSpawnedNote = note.transform;
+}
+
 
     public IEnumerator EndGame(bool won = false)
     {
