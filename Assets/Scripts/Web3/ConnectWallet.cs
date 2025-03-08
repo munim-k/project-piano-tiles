@@ -1,17 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Thirdweb;
-using System;
-using System.Numerics;
-using System.Threading.Tasks;
 
 namespace Thirdweb.Unity
 {
     public class ConnectWallet : MonoBehaviour
     {
         private string _address;
+        private bool WebglForceMetamaskExtension = false;
         //private ChainData _currentChainData;
 
         private void Start()
@@ -31,7 +26,18 @@ namespace Thirdweb.Unity
             }
         }
 
-        private async void PostConnect()
+        public void onClickWalletConnectWallet(){
+            var externalWalletProvider = Application.platform == RuntimePlatform.WebGLPlayer && WebglForceMetamaskExtension ? WalletProvider.MetaMaskWallet : WalletProvider.WalletConnectWallet;
+            var options =  new WalletOptions(provider: externalWalletProvider, chainId: 1868);
+            var wallet = ThirdwebManager.Instance.ConnectWallet(options);
+            if(wallet != null)
+            {
+                Debug.Log("Connected to wallet: " + wallet);
+                PostConnect();
+            }
+        }
+
+        private void PostConnect()
         {
             Debug.Log($"Connected to {_address}");
             SceneManager.LoadScene("Loading");
