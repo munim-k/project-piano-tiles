@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace Thirdweb.Unity{
 public class MintGemsManager : MonoBehaviour
@@ -12,7 +13,9 @@ public class MintGemsManager : MonoBehaviour
     
     private int gemCount = 5; // Minimum and starting value
 
-    void Start()
+    public Web3PaymentThirdweb web3Payment;
+
+    async void Start()
     {
         UpdateGemText();
     }
@@ -42,17 +45,15 @@ public class MintGemsManager : MonoBehaviour
         BigInteger amount = 1000000000000000000;
         amount *= 40;
         amount *= gemCount/5;
-        Web3PaymentThirdweb web3Payment = new Web3PaymentThirdweb();
-        amount = 5;
-        web3Payment.ApproveASTR(amount);
+        await web3Payment.ApproveASTR(amount);
         BigInteger allowedAmount = await web3Payment.GetAllowance();
-        if (allowedAmount < amount)
-        {
-            Debug.Log("Approving ASTR Tokens");
-            web3Payment.ApproveASTR(amount);
-        }
+        // if (allowedAmount < amount)
+        // {
+        //     Debug.Log("Approving ASTR Tokens");
+        //     await web3Payment.ApproveASTR(amount);
+        // }
         Debug.Log("Paying for Gems");
-        web3Payment.PayForGems(gemCount);
+        await web3Payment.PayForGems(gemCount);
         //await contract.DropERC20_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,amount);
         //await contract.ERC20_Transfer(ThirdwebManager.Instance.GetActiveWallet(), toAddress, amount);
         //contract.erc20
