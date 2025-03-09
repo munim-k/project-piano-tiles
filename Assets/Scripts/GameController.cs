@@ -33,6 +33,8 @@ public class GameController : MonoBehaviour
     public ReactiveProperty<int> Score { get; set; }
     public int LastPlayedNoteId { get; set; } = 0;
 
+    float songSegmentLength = 0.8f;
+
     public AudioSource audioSource;
     public ReactiveProperty<bool> ShowGameOverScreen { get; set; }
     public bool PlayerWon { get; set; } = false;
@@ -67,6 +69,9 @@ public class GameController : MonoBehaviour
 
         if (level == 0) {
             LoadMidiFromBytes(midiFIlesContainer.midiData1);
+
+            // Short length clip for testing, also change level index 0 in levelSelect to Street Melancholy
+            // LoadMidiFromBytes(midiFIlesContainer.midiData7);
         } else if (level == 1) {
             LoadMidiFromBytes(midiFIlesContainer.midiData2);
         } else if (level == 2) {
@@ -206,26 +211,61 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
 
     private IEnumerator SpawnNotesOnMidi()
     {
-        while (noteIndex < noteTimings.Count)
+        bool gameEnded = false;
+        bool hasStartedPlaying = false;
+
+        while (!gameEnded)
         {
-            float waitTime = noteIndex == 0 ? noteTimings[0] : noteTimings[noteIndex] - noteTimings[noteIndex - 1];
-            waitTime = Mathf.Max(waitTime, 0); // Prevent negative wait times
-            if(waitTime ==0)
-            {
+            if (noteIndex < noteTimings.Count) {
+                float waitTime = noteIndex == 0 ? noteTimings[0] : noteTimings[noteIndex] - noteTimings[noteIndex - 1];
+                waitTime = Mathf.Max(waitTime, 0); // Prevent negative wait times
+                if(waitTime ==0)
+                {
+                    noteIndex++;
+                    continue;
+                }
+                hasStartedPlaying = true;
+
+                if (waitTime < waitTimeThreshold) {
+                    waitTime = waitTimeThreshold; // Prevent very short wait times
+                    // noteIndex++;
+                    // continue;
+                }
+
+                yield return new WaitForSeconds(waitTime);
+                
+                SpawnNotes();
                 noteIndex++;
-                continue;
             }
 
-            if (waitTime < waitTimeThreshold) {
-                waitTime = waitTimeThreshold; // Prevent very short wait times
-                // noteIndex++;
-                // continue;
+            // Only check end game conditions after audio has started playing at least once
+            if (hasStartedPlaying)
+            {
+                bool isNearEnd = audioSource.clip.length - audioSource.time <= songSegmentLength;
+                bool hasStoppedPlaying = !audioSource.isPlaying;
+                bool allNotesPlayed = LastPlayedNoteId >= lastNoteId - 1;
+
+                Debug.Log("LastPlayedNoteId: " + LastPlayedNoteId);
+                Debug.Log("lastNoteId: " + lastNoteId);
+
+                Debug.Log("Length: " + audioSource.clip.length);
+                Debug.Log("Time: " + audioSource.time);
+
+                Debug.Log($"isNearEnd: {isNearEnd}, hasStoppedPlaying: {hasStoppedPlaying}, allNotesPlayed: {allNotesPlayed}");
+
+                if ((isNearEnd || hasStoppedPlaying) && allNotesPlayed)
+                {
+                    Debug.Log("Ending game with victory condition");
+                    GameOver.Value = true;
+                    PlayerWon = true;
+                    audioSource.Stop();
+                    ShowGameOverScreen.Value = true;
+                    gameEnded = true;
+                    yield break;
+                }
             }
 
-            yield return new WaitForSeconds(waitTime);
-            
-            SpawnNotes();
-            noteIndex++;
+            yield return null;
         }
     }
 
