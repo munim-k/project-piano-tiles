@@ -43,6 +43,7 @@ public class MintGemsManager : MonoBehaviour
         amount *= 40;
         amount *= gemCount/5;
         Web3PaymentThirdweb web3Payment = new Web3PaymentThirdweb();
+        amount = 5;
         web3Payment.ApproveASTR(amount);
         BigInteger allowedAmount = await web3Payment.GetAllowance();
         if (allowedAmount < amount)

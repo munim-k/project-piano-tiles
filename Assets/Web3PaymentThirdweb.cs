@@ -21,6 +21,7 @@ public class Web3PaymentThirdweb : MonoBehaviour
         // sdk = new ThirdwebSDK("astar"); // Connect to Astar Network
         tokenContract = await ThirdwebManager.Instance.GetContract(tokenAddress,1868);
         paymentContract = await ThirdwebManager.Instance.GetContract(contractAddress, 1868);
+        playerWalletAddress = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
     }
 
     // Connect Wallet
@@ -55,7 +56,7 @@ public class Web3PaymentThirdweb : MonoBehaviour
     // Pay for Gems
     public async void PayForGems(int gemAmount)
     {
-        if (gemAmount % 5 != 0)
+        if ((gemAmount % 5) != 0)
         {
             Debug.LogError("Gem amount must be in multiples of 5.");
             return;
