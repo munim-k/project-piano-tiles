@@ -4,6 +4,7 @@ using UnityEngine;
 public class DesktopChecker : MonoBehaviour
 {
         public GameObject loginButton;
+        public GameObject goToDesktopPanel;
 
         [DllImport("__Internal")]
         private static extern bool IsMobile();
@@ -13,14 +14,14 @@ public class DesktopChecker : MonoBehaviour
             #if !UNITY_EDITOR && UNITY_WEBGL
             {
             if(IsMobile()){
-                //enable popup for sending to desktop here
+                goToDesktopPanel.SetActive(true);
             }else{
                 loginButton.SetActive(true);
             }
             }
             #else
             {
-                loginButton.SetActive(true);
+                goToDesktopPanel.SetActive(true);
             }
             #endif
         }
