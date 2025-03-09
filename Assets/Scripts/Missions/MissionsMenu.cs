@@ -84,14 +84,9 @@ public class Missions : MonoBehaviour
 
     [SerializeField] Sprite claimButtonSprite;
     [SerializeField] Image claimButtonImg;
-    public async void ClaimFinalReward(string addr) {
-        Debug.Log("Claimed Final Reward");
-        claimed[5] = true;
-        claimButtonImg.sprite = claimButtonSprite;
-         var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
-        string address = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
-        await contract.DropERC20_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,"15");
-        //yahaan pe acs currency kam karwani hai
+    public void ClaimFinalReward() {
+        //Redirect user to claim ACS points on web url     
+        Application.OpenURL("https://www.metakraft.ai/start");   
     }
 
 

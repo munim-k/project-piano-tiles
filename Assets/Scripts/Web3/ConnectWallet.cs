@@ -21,7 +21,6 @@ namespace Thirdweb.Unity
 
         public async void onClick()
         {
-            CookieManager.Instance.SaveProgress("wallet", "was connecting");
             var options = new WalletOptions(provider: WalletProvider.MetaMaskWallet, chainId: 1868);
             var wallet = await ThirdwebManager.Instance.ConnectWallet(options);
             if(wallet != null)
