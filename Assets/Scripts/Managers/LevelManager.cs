@@ -157,12 +157,7 @@ public class LevelManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
-    private void Start()
-    {
-        var val = CookieManager.Instance.LoadProgress("wallet");
-        Debug.Log("Value Loaded from cookie: " + val);
-        //InitializeGameData();
-    }
+    
     private async Task InitializeGameData()
     {
         await LoadGameData();

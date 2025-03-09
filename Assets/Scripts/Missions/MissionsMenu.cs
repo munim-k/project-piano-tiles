@@ -85,7 +85,8 @@ public class Missions : MonoBehaviour
     [SerializeField] Sprite claimButtonSprite;
     [SerializeField] Image claimButtonImg;
     public void ClaimFinalReward() {
-        //Redirect user to claim ACS points on web url        
+        //Redirect user to claim ACS points on web url     
+        Application.OpenURL("https://www.metakraft.ai/start");   
     }
 
 

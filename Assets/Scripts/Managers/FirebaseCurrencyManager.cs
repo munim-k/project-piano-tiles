@@ -1,9 +1,10 @@
 using FirebaseWebGL.Examples.Utils;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 using FirebaseWebGL.Scripts.Objects;
+using Thirdweb;
 using TMPro;
 using UnityEngine;
-
+using WalletConnectSharp.Sign.Models;
 public class FirebaseCurrencyManager : MonoBehaviour
 {
     [SerializeField] int tokens;
@@ -52,10 +53,35 @@ public class FirebaseCurrencyManager : MonoBehaviour
         SetStars(stars);
     }
 
-    public void SetUserData(string data) {
+    public async void SetUserData(string data) {
+        Debug.Log("Setting User Data!");
         var userData = StringSerializationAPI.Deserialize(typeof(UserData), data) as UserData;
         tokens = userData.tokens;
         stars = userData.stars;
+        if(stars <= 0){
+            Debug.Log("Stars are zero. Checking NFT");
+            try
+            {var thirdWebContract = await Thirdweb.Unity.ThirdwebManager.Instance.GetContract("0x1D98101247FB761c9aDC4e2EaD6aA6b6a00c170e",1868);
+            if(thirdWebContract != null)
+            {
+            var balance = await thirdWebContract.ERC721_BalanceOf(await Thirdweb.Unity.ThirdwebManager.Instance.GetActiveWallet().GetAddress());
+            Debug.Log("Balance of NFT : " + balance);
+            if(balance > 0){
+                stars = 162;
+                Debug.Log("Set Stars:" + stars);
+                SetStars(stars);
+            }
+            }
+            else{
+                Debug.Log("Contract is null");
+            }
+            }
+            catch(System.Exception e){
+                Debug.Log("Error in getting NFT :" + e.Message);
+            }
+            
+            
+        }
         coinText.text = tokens.ToString();
         starText.text = stars.ToString();
     }
