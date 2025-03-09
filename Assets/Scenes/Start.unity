@@ -1721,6 +1721,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 88207187}
     m_Modifications:
     - target: {fileID: 138385828389262016, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 138385828389262016, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 138385828389262016, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 138385828389262016, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.83538914
       objectReference: {fileID: 0}
@@ -1734,11 +1746,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 138385828389262016, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 64.41
+      value: -425
       objectReference: {fileID: 0}
     - target: {fileID: 138385828389262016, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -57.416
+      value: -62
       objectReference: {fileID: 0}
     - target: {fileID: 511434065340454432, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1919,7 +1931,7 @@ PrefabInstance:
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: b513e31231acc80428d8b37e6bf02809, type: 3}
+      objectReference: {fileID: 8300000, guid: 06a5aa961738e06b090f79d3a6ce25c5, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[1]
       value: 
@@ -4012,7 +4024,7 @@ PrefabInstance:
     - target: {fileID: 4525160763974158490, guid: 9bf0901549f217548a2c311f78e88f17, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: b513e31231acc80428d8b37e6bf02809, type: 3}
+      objectReference: {fileID: 8300000, guid: 06a5aa961738e06b090f79d3a6ce25c5, type: 3}
     - target: {fileID: 7477036708870820065, guid: 9bf0901549f217548a2c311f78e88f17, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.63692516

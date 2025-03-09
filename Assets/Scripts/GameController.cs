@@ -68,10 +68,10 @@ public class GameController : MonoBehaviour
         int level = FirebaseLevelManager.Instance.level;
 
         if (level == 0) {
-            LoadMidiFromBytes(midiFIlesContainer.midiData1);
+            //LoadMidiFromBytes(midiFIlesContainer.midiData1);
 
             // Short length clip for testing, also change level index 0 in levelSelect to Street Melancholy
-            // LoadMidiFromBytes(midiFIlesContainer.midiData7);
+             LoadMidiFromBytes(midiFIlesContainer.midiData7);
         } else if (level == 1) {
             LoadMidiFromBytes(midiFIlesContainer.midiData2);
         } else if (level == 2) {
