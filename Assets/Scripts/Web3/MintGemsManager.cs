@@ -36,14 +36,24 @@ public class MintGemsManager : MonoBehaviour
     public async void MintGems(string addr)
     {
         Debug.Log("Minting Gems");
-        var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
-        string senderAddress = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
-        string toAddress = "0x4f4f2DfEc5a93b1E13ac64d0622f0F1D1B2A6CB2";
+        //var contract = await ThirdwebManager.Instance.GetContract(addr, ActiveChainId);
+        //string senderAddress = await ThirdwebManager.Instance.GetActiveWallet().GetAddress();
+        //string toAddress = "0x4f4f2DfEc5a93b1E13ac64d0622f0F1D1B2A6CB2";
         BigInteger amount = 1000000000000000000;
         amount *= 40;
         amount *= gemCount/5;
+        Web3PaymentThirdweb web3Payment = new Web3PaymentThirdweb();
+        web3Payment.ApproveASTR(amount);
+        BigInteger allowedAmount = await web3Payment.GetAllowance();
+        if (allowedAmount < amount)
+        {
+            Debug.Log("Approving ASTR Tokens");
+            web3Payment.ApproveASTR(amount);
+        }
+        Debug.Log("Paying for Gems");
+        web3Payment.PayForGems(gemCount);
         //await contract.DropERC20_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,amount);
-        await contract.ERC20_Transfer(ThirdwebManager.Instance.GetActiveWallet(), toAddress, amount);
+        //await contract.ERC20_Transfer(ThirdwebManager.Instance.GetActiveWallet(), toAddress, amount);
         //contract.erc20
         FirebaseCurrencyManager.Instance.AddStars(gemCount);
         gemCount = 5;
