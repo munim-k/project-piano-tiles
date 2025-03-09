@@ -3262,7 +3262,6 @@ GameObject:
   - component: {fileID: 1329632406}
   - component: {fileID: 1329632405}
   - component: {fileID: 1329632408}
-  - component: {fileID: 1329632407}
   m_Layer: 0
   m_Name: Gems
   m_TagString: Untagged
@@ -3328,20 +3327,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329632403}
   m_CullTransparentMesh: 1
---- !u!114 &1329632407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1329632403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ecff87537dde0458d0686bfc397ae7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToActivate: {fileID: 0}
-  objectToDeactivate: {fileID: 0}
 --- !u!114 &1329632408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5500,7 +5485,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1915437458}
-  - {fileID: 294820581}
   - {fileID: 88207186}
   - {fileID: 1380789240424096807}
   - {fileID: 546228870}
