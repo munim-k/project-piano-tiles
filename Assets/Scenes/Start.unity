@@ -1343,7 +1343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91eab6e4fd8108eba5dacdbb9ca3ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelsUnlocked: 000000000000
+  levelsUnlocked: 010101010101
   levelsCompleted: 000000000000
   level: 0
 --- !u!1 &474635047 stripped
@@ -1855,23 +1855,23 @@ PrefabInstance:
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 4bc288909dcfe004bafb2b2682a77964, type: 3}
+      objectReference: {fileID: 8300000, guid: c3bb085d2d3787c768865c2a11d2646e, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[2]
       value: 
-      objectReference: {fileID: 8300000, guid: 6b25bdcf793a2ec4b8a8940476f35dc4, type: 3}
+      objectReference: {fileID: 8300000, guid: 0e7f350548dd360cc88be84c8444114c, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[3]
       value: 
-      objectReference: {fileID: 8300000, guid: b3b1272dd5735996f8ed96b3861b70ed, type: 3}
+      objectReference: {fileID: 8300000, guid: 119770c8ce62f2d6980f83dedebe0969, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[4]
       value: 
-      objectReference: {fileID: 8300000, guid: 052ceec9f41210c56a119e92249668ac, type: 3}
+      objectReference: {fileID: 8300000, guid: 1d3c4d3bf9e056dda9878bb64d7b9302, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[5]
       value: 
-      objectReference: {fileID: 8300000, guid: 4ec877e024a7e88caaa1b7a896ba0d06, type: 3}
+      objectReference: {fileID: 8300000, guid: 3372db9468b7039499b258094fa13cc5, type: 3}
     - target: {fileID: 2826615460942517165, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3207,10 +3207,10 @@ RectTransform:
   - {fileID: 1215371504}
   m_Father: {fileID: 219957329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 147.12451}
-  m_SizeDelta: {x: 0, y: 290.2494}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0.757, y: 147.12451}
+  m_SizeDelta: {x: 1081.593, y: 290.249}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1304297705
 MonoBehaviour:

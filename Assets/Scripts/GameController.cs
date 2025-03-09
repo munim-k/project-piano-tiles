@@ -12,7 +12,7 @@ using System.IO;
 public class GameController : MonoBehaviour
 {
     public static GameController Instance { get; private set; }
-    public midiFIlesContainer midiFilesContainer;
+    // public midiFIlesContainer midiFilesContainer;
     
     public Transform lastSpawnedNote;
     private int lastNoteId = 1;
@@ -44,6 +44,8 @@ public class GameController : MonoBehaviour
     private int noteIndex = 0;
     public float playAudioWaitTime = 0.5f;
 
+    float waitTimeThreshold;
+
     private void Awake()
     {
         Instance = this;
@@ -56,10 +58,27 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        midiFilesContainer = FindAnyObjectByType<midiFIlesContainer>();
+        // midiFilesContainer = FindAnyObjectByType<midiFIlesContainer>();
         
         SetDataForNoteGeneration();
-        LoadMidiFromBytes(midiFilesContainer.midiData1);
+        // LoadMidiFromBytes(midiFilesContainer.midiData1);
+
+        int level = FirebaseLevelManager.Instance.level;
+
+        if (level == 0) {
+            LoadMidiFromBytes(midiFIlesContainer.midiData1);
+        } else if (level == 1) {
+            LoadMidiFromBytes(midiFIlesContainer.midiData2);
+        } else if (level == 2) {
+            LoadMidiFromBytes(midiFIlesContainer.midiData3);
+        } else if (level == 3) {
+            LoadMidiFromBytes(midiFIlesContainer.midiData4);
+        } else if (level == 4) {
+            LoadMidiFromBytes(midiFIlesContainer.midiData5);
+        } else if (level == 5) {
+            LoadMidiFromBytes(midiFIlesContainer.midiData6);
+        }
+
         StartCoroutine(SpawnNotesOnMidi());
         StartGame();
     }
@@ -77,10 +96,10 @@ public class GameController : MonoBehaviour
     private void StartGame()
     {
         GameController.Instance.GameStarted.Value = true;
-        Invoke("playAudio", playAudioWaitTime);
+        Invoke(nameof(PlayAudio), playAudioWaitTime);
         
     }
-    private void playAudio()
+    private void PlayAudio()
     {
         audioSource.Play();
     }
@@ -154,6 +173,22 @@ void LoadMidiFromBytes(byte[] midiBytes)
                 }
 
                 noteTimings.Sort();
+
+                // Extract the first tempo event from the MIDI file using LINQ.
+                // Ensure you have "using System.Linq;" at the top of your file.
+                var tempo = tempoMap.GetTempoAtTime(new MidiTimeSpan(0));
+
+                // Convert microseconds per quarter note to BPM
+                float bpm = 60000000f / tempo.MicrosecondsPerQuarterNote;
+
+                // Map BPM to noteSpeed (adjust this divisor to fine-tune)
+                noteSpeed = bpm / 30f;
+
+                Debug.Log($"Calculated BPM: {bpm} -> noteSpeed: {noteSpeed}");
+
+                waitTimeThreshold = ( 60f / bpm ) * 1.25f;
+                Debug.Log("Wait Time Threshold: " + waitTimeThreshold);
+
             }
         }
         catch (System.Exception e)
@@ -175,11 +210,16 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
         {
             float waitTime = noteIndex == 0 ? noteTimings[0] : noteTimings[noteIndex] - noteTimings[noteIndex - 1];
             waitTime = Mathf.Max(waitTime, 0); // Prevent negative wait times
-            Debug.Log($"Wait time: {waitTime}");
             if(waitTime ==0)
             {
                 noteIndex++;
                 continue;
+            }
+
+            if (waitTime < waitTimeThreshold) {
+                waitTime = waitTimeThreshold; // Prevent very short wait times
+                // noteIndex++;
+                // continue;
             }
 
             yield return new WaitForSeconds(waitTime);
