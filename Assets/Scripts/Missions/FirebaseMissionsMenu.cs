@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Thirdweb.Unity;
-using System.Threading.Tasks;
+// using System.Threading.Tasks;
+using FirebaseWebGL.Examples.Utils;
+using FirebaseWebGL.Scripts.FirebaseBridge;
+using FirebaseWebGL.Scripts.Objects;
 
 namespace Thirdweb.Unity{
-public class MissionsMenu : MonoBehaviour
+public class FirebaseMissionsMenu : MonoBehaviour
 {
     string[] contracts = new string[6] {
         "Test",
@@ -23,17 +26,53 @@ public class MissionsMenu : MonoBehaviour
 
     void Start() {
         //load karwa claimed etc firebase se
-        for (int i = 0; i < 5; i++) {
-            claimButtons[i].Setup(false, FirebaseLevelManager.Instance.levelsCompleted[i], i);
+
+        Debug.Log("FirebaseMissionsMenu Start");
+        FirebaseDatabase.GetJSON($"users/{firebaseManager.idToken}", gameObject.name, nameof(HandleGetClaimed), null);
+
+        // for (int i = 0; i < 5; i++) {
+        //     claimButtons[i].Setup(false, FirebaseLevelManager.Instance.levelsCompleted[i], i);
+        // }
+        // if (FirebaseLevelManager.Instance.levelsCompleted[5]) {
+        //     claimButtonImg.sprite = claimButtonSprite;
+        // } else {
+        //     ColorBlock block = claimButtonImg.GetComponent<Button>().colors;
+        //     block.disabledColor = block.normalColor;
+        //     claimButtonImg.GetComponent<Button>().colors = block;
+        //     claimButtonImg.GetComponent<Button>().interactable = false;
+        // }
+    }
+
+    void HandleGetClaimed(string data) {
+        // Debug.Log("Claimed Data: " + data);
+        if (string.IsNullOrEmpty(data)) {
+            return;
         }
-        if (FirebaseLevelManager.Instance.levelsCompleted[5]) {
-            claimButtonImg.sprite = claimButtonSprite;
-        } else {
-            ColorBlock block = claimButtonImg.GetComponent<Button>().colors;
-            block.disabledColor = block.normalColor;
-            claimButtonImg.GetComponent<Button>().colors = block;
-            claimButtonImg.GetComponent<Button>().interactable = false;
+        try {
+            var parsedData = StringSerializationAPI.Deserialize(typeof(UserData), data) as UserData;
+            claimed = parsedData.levelsClaimed;
+            bool[] levelsCompleted = parsedData.levelsCompleted;
+            for (int i = 0; i < 5; i++) {
+                claimButtons[i].Setup(claimed[i], levelsCompleted[i], i);
+            }
+            if (levelsCompleted[5]) {
+                claimButtonImg.sprite = claimButtonSprite;
+            } else {
+                ColorBlock block = claimButtonImg.GetComponent<Button>().colors;
+                block.disabledColor = block.normalColor;
+                claimButtonImg.GetComponent<Button>().colors = block;
+                claimButtonImg.GetComponent<Button>().interactable = false;
+            }
+        } catch (System.Exception e) {
+            Debug.LogError(e.Message);
         }
+    }
+
+    void SaveClaimedData() {
+        // bool[] data;
+        // data = claimed;
+        string dataString = StringSerializationAPI.Serialize(typeof(bool[]), claimed);
+        FirebaseDatabase.UpdateJSON($"users/{firebaseManager.idToken}/levelsClaimed", dataString, gameObject.name, null, null);
     }
 
 
@@ -44,6 +83,8 @@ public class MissionsMenu : MonoBehaviour
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[0] = true;
         claimButtons[0].Setup(claimed[0], FirebaseLevelManager.Instance.levelsCompleted[0], 0);
+
+        SaveClaimedData();
     }
 
     public async void ClaimLevel2(string addr) {
@@ -53,6 +94,8 @@ public class MissionsMenu : MonoBehaviour
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[1] = true;
         claimButtons[1].Setup(claimed[1], FirebaseLevelManager.Instance.levelsCompleted[1], 1);
+
+        SaveClaimedData();
     }
 
     public async void ClaimLevel3(string addr) {
@@ -62,6 +105,8 @@ public class MissionsMenu : MonoBehaviour
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[2] = true;
         claimButtons[2].Setup(claimed[2], FirebaseLevelManager.Instance.levelsCompleted[2], 2);
+
+        SaveClaimedData();
     }
 
     public async void ClaimLevel4(string addr) {
@@ -71,6 +116,8 @@ public class MissionsMenu : MonoBehaviour
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[3] = true;
         claimButtons[3].Setup(claimed[3], FirebaseLevelManager.Instance.levelsCompleted[3], 3);
+
+        SaveClaimedData();
     }
 
     public async void ClaimLevel5(string addr) {
@@ -80,6 +127,8 @@ public class MissionsMenu : MonoBehaviour
         await contract.DropERC721_Claim(ThirdwebManager.Instance.GetActiveWallet(), address ,1);
         claimed[4] = true;
         claimButtons[4].Setup(claimed[4], FirebaseLevelManager.Instance.levelsCompleted[4], 4);
+
+        SaveClaimedData();
     }
 
     [SerializeField] Sprite claimButtonSprite;

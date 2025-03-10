@@ -35,7 +35,7 @@ public class firebaseManager : MonoBehaviour
             return;
         }
         
-        FirebaseAuth.OnAuthStateChanged(gameObject.name, "DisplayUserInfo", "DisplayErrorObject");
+        FirebaseAuth.OnAuthStateChanged(gameObject.name, nameof(DisplayUserInfo), "DisplayErrorObject");
     }
 
     // Handle OnAuthStateChanged. Gets the serialized user object.
@@ -47,9 +47,9 @@ public class firebaseManager : MonoBehaviour
         }
         try {
             var parsedUser = StringSerializationAPI.Deserialize(typeof(FirebaseUser), user) as FirebaseUser;
-            Debug.Log(parsedUser);
+            // Debug.Log("Parsed User:" + parsedUser);
             idToken = parsedUser.uid;
-            DisplayData($"Email: {parsedUser.email}, UserId: {parsedUser.uid}, EmailVerified: {parsedUser.isEmailVerified}");
+            // DisplayData($"Email: {parsedUser.email}, UserId: {parsedUser.uid}, EmailVerified: {parsedUser.isEmailVerified}");
         } catch (System.Exception e) {
             DisplayError(e.Message);
         }

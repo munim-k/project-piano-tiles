@@ -91,6 +91,7 @@ public class FirebaseLevelManager : MonoBehaviour
     {
         try
         {
+            Debug.Log("Id Token: " + firebaseManager.idToken);
             FirebaseDatabase.GetJSON($"users/{firebaseManager.idToken}", gameObject.name, nameof(SetUserData), nameof(DisplayErrorObject));
         }
         catch (System.Exception e)

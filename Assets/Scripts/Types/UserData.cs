@@ -4,4 +4,5 @@ public class UserData {
     public int stars;
     public bool[] levelsUnlocked;
     public bool[] levelsCompleted;
+    public bool[] levelsClaimed;
 }
