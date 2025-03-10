@@ -84,8 +84,8 @@ public class GameController : MonoBehaviour
             LoadMidiFromBytes(midiFIlesContainer.midiData6); // sia-chandelier (2)
         }
 
-        StartCoroutine(SpawnNotesOnMidi());
         StartGame();
+        StartCoroutine(SpawnNotesOnMidi());
     }
 
     private void Update()
@@ -107,6 +107,7 @@ public class GameController : MonoBehaviour
     private void PlayAudio()
     {
         audioSource.Play();
+        hasStartedPlaying = true;
     }
 
     private void DetectNoteClicks()
@@ -209,34 +210,56 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
 }
 
 
+    bool hasStartedPlaying = false;
     private IEnumerator SpawnNotesOnMidi()
     {
         bool gameEnded = false;
-        bool hasStartedPlaying = false;
+
+        int lastNoteSpawedIndex = noteIndex;
+
+        bool flag = false;
 
         while (!gameEnded)
         {
             if (noteIndex < noteTimings.Count) {
                 float waitTime = noteIndex == 0 ? noteTimings[0] : noteTimings[noteIndex] - noteTimings[noteIndex - 1];
                 waitTime = Mathf.Max(waitTime, 0); // Prevent negative wait times
-                if(waitTime ==0)
+                if(waitTime == 0)
                 {
                     noteIndex++;
                     continue;
                 }
-                hasStartedPlaying = true;
+                // hasStartedPlaying = true;
 
-                if (waitTime < waitTimeThreshold) {
-                    waitTime = waitTimeThreshold; // Prevent very short wait times
-                    // noteIndex++;
+
+                float timeSinceLastNote = noteTimings[noteIndex] - noteTimings[lastNoteSpawedIndex];
+                // Debug.Log("Current Note Timing: " + noteTimings[noteIndex] + "; Last Note Timing: " + noteTimings[lastNoteSpawedIndex] + "; Time Since Last Note: " + timeSinceLastNote);
+
+
+                bool flag2 = false;
+                if (timeSinceLastNote < waitTimeThreshold && flag) {
+                    // waitTime = waitTimeThreshold; // Prevent very short wait times
+                    noteIndex++;
+                    flag2 = true;
                     // continue;
                 }
 
                 yield return new WaitForSeconds(waitTime);
+
+                if (flag2) {
+                    continue;
+                }
                 
                 SpawnNotes();
+                lastNoteSpawedIndex = noteIndex;
+                flag = true;
                 noteIndex++;
+            } else {
+                audioSource.Stop();
             }
+
+            // Debug.Log("Game Ended: " + gameEnded + "; Audio Source Playing: " + audioSource.isPlaying + "; Has Started Playing: " + hasStartedPlaying);
+            // Debug.Log("Note Index: " + noteIndex + " Note Timings Count: " + noteTimings.Count);
 
             // Only check end game conditions after audio has started playing at least once
             if (hasStartedPlaying)
@@ -245,13 +268,13 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
                 bool hasStoppedPlaying = !audioSource.isPlaying;
                 bool allNotesPlayed = LastPlayedNoteId >= lastNoteId - 1;
 
-                Debug.Log("LastPlayedNoteId: " + LastPlayedNoteId);
-                Debug.Log("lastNoteId: " + lastNoteId);
+                // Debug.Log("LastPlayedNoteId: " + LastPlayedNoteId);
+                // Debug.Log("lastNoteId: " + lastNoteId);
 
-                Debug.Log("Length: " + audioSource.clip.length);
-                Debug.Log("Time: " + audioSource.time);
+                // Debug.Log("Length: " + audioSource.clip.length);
+                // Debug.Log("Time: " + audioSource.time);
 
-                Debug.Log($"isNearEnd: {isNearEnd}, hasStoppedPlaying: {hasStoppedPlaying}, allNotesPlayed: {allNotesPlayed}");
+                // Debug.Log($"isNearEnd: {isNearEnd}, hasStoppedPlaying: {hasStoppedPlaying}, allNotesPlayed: {allNotesPlayed}");
 
                 if ((isNearEnd || hasStoppedPlaying) && allNotesPlayed)
                 {
@@ -286,6 +309,7 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
             note.Visible = true;
 
             note.Id = lastNoteId;
+            // Debug.Log("Spawning Note with ID: " + lastNoteId);
             lastNoteId++;
             lastSpawnedNote = note.transform;
         } else {

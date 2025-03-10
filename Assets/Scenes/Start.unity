@@ -1900,7 +1900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[0]
@@ -1909,23 +1909,27 @@ PrefabInstance:
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 1d3c4d3bf9e056dda9878bb64d7b9302, type: 3}
+      objectReference: {fileID: 8300000, guid: 3372db9468b7039499b258094fa13cc5, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[2]
       value: 
-      objectReference: {fileID: 8300000, guid: 119770c8ce62f2d6980f83dedebe0969, type: 3}
+      objectReference: {fileID: 8300000, guid: 1d3c4d3bf9e056dda9878bb64d7b9302, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[3]
       value: 
-      objectReference: {fileID: 8300000, guid: c3bb085d2d3787c768865c2a11d2646e, type: 3}
+      objectReference: {fileID: 8300000, guid: 119770c8ce62f2d6980f83dedebe0969, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[4]
       value: 
-      objectReference: {fileID: 8300000, guid: 0e7f350548dd360cc88be84c8444114c, type: 3}
+      objectReference: {fileID: 8300000, guid: c3bb085d2d3787c768865c2a11d2646e, type: 3}
     - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: buttonClickSound.Array.data[5]
       value: 
-      objectReference: {fileID: 8300000, guid: 3372db9468b7039499b258094fa13cc5, type: 3}
+      objectReference: {fileID: 8300000, guid: 0e7f350548dd360cc88be84c8444114c, type: 3}
+    - target: {fileID: 2129249623384970701, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
+      propertyPath: buttonClickSound.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 06a5aa961738e06b090f79d3a6ce25c5, type: 3}
     - target: {fileID: 2826615460942517165, guid: 920e607b04a54ca4d8eeece2d81ed4cb, type: 3}
       propertyPath: m_IsActive
       value: 0
