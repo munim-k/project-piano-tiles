@@ -9,7 +9,7 @@ public class LostModal : MonoBehaviour
     public void Show(int score, int level)
     {
         pointsText.text = score.ToString();
-        levelText.text = "Level: 0" + level;
+        levelText.text = "Level: 0" + (level + 1);
     }
 
     public void Restart()

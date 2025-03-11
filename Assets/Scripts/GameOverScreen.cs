@@ -16,7 +16,7 @@ public class GameOverScreen : MonoBehaviour
         {
             visibility.Visible = true;
 
-            int level = FirebaseLevelManager.Instance.level + 1;
+            int level = FirebaseLevelManager.Instance.level;
             int score = GameController.Instance.Score.Value;
 
             if (GameController.Instance.PlayerWon)
