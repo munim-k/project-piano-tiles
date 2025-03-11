@@ -4984,18 +4984,18 @@ PrefabInstance:
     - target: {fileID: 2119160365543487042, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: objectToActivate
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2123318172}
     - target: {fileID: 2119160365543487042, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: objectToDeactivate
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 775555035}
     - target: {fileID: 2648345004825105889, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: m_Transition
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2648345004825105889, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2648345004825105889, guid: 243520f5c9e648c4e832db5ea9de7ca8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
