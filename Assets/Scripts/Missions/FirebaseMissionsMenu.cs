@@ -30,17 +30,17 @@ public class FirebaseMissionsMenu : MonoBehaviour
         Debug.Log("FirebaseMissionsMenu Start");
         FirebaseDatabase.GetJSON($"users/{firebaseManager.idToken}", gameObject.name, nameof(HandleGetClaimed), null);
 
-        for (int i = 0; i < 5; i++) {
-            claimButtons[i].Setup(false, FirebaseLevelManager.Instance.levelsCompleted[i], i);
-        }
-        if (FirebaseLevelManager.Instance.levelsCompleted[5]) {
-            claimButtonImg.sprite = claimButtonSprite;
-        } else {
-            ColorBlock block = claimButtonImg.GetComponent<Button>().colors;
-            block.disabledColor = block.normalColor;
-            claimButtonImg.GetComponent<Button>().colors = block;
-            claimButtonImg.GetComponent<Button>().interactable = false;
-        }
+        // for (int i = 0; i < 5; i++) {
+        //     claimButtons[i].Setup(false, FirebaseLevelManager.Instance.levelsCompleted[i], i);
+        // }
+        // if (FirebaseLevelManager.Instance.levelsCompleted[5]) {
+        //     claimButtonImg.sprite = claimButtonSprite;
+        // } else {
+        //     ColorBlock block = claimButtonImg.GetComponent<Button>().colors;
+        //     block.disabledColor = block.normalColor;
+        //     claimButtonImg.GetComponent<Button>().colors = block;
+        //     claimButtonImg.GetComponent<Button>().interactable = false;
+        // }
     }
 
     void HandleGetClaimed(string data) {
