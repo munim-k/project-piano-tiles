@@ -103,6 +103,7 @@ public class FirebaseCurrencyManager : MonoBehaviour
 
     public void AddTokens(int amount)
     {
+        Debug.Log("Adding Tokens");
         tokens += amount;
         coinText.text = tokens.ToString();
         SetCurrencyBalances();

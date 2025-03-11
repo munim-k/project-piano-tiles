@@ -279,6 +279,7 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
                 if ((isNearEnd || hasStoppedPlaying) && allNotesPlayed)
                 {
                     Debug.Log("Ending game with victory condition");
+                    FirebaseCurrencyManager.Instance.AddTokens(Score.Value);
                     GameOver.Value = true;
                     PlayerWon = true;
                     audioSource.Stop();
