@@ -805,8 +805,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acsAmountToTransfer: 10
-  defiID: 20
-  apiSecret: b2n5m8q1w4e7r3t6y9u2i5o8p1a4s7d2f5g8h3j6
+  defiID: 35
+  apiSecret: k9m2x7p4w1n8v5b3q6t0y3u7i4l2s9f6h
+  signature: 
+  nonce: 
+  timestamp: 
 --- !u!4 &1442318266
 Transform:
   m_ObjectHideFlags: 0

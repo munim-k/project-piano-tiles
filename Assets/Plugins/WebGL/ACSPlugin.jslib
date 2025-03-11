@@ -1,95 +1,85 @@
 mergeInto(LibraryManager.library, {
     ACS_GenerateNonce: function () {
-        console.log("🔹 Generating Nonce...");
-        let nonce = allocate(intArrayFromString(window.crypto.randomUUID()), 'i8', ALLOC_NORMAL);
-        console.log("Returning generated nonce: ", nonce);
-        return nonce;
+        if (typeof ACSPlugin === "undefined") {
+            console.error("❌ ACSPlugin is not loaded. Make sure it's included in the WebGL template.");
+            return allocate(intArrayFromString("Error"), ALLOC_NORMAL);
+        }
+
+        let nonce = ACSPlugin.generateNonce();
+        return allocate(intArrayFromString(nonce), ALLOC_NORMAL);
     },
 
-    ACS_GenerateSignature: function (itemsJsonPtr, timestamp, noncePtr, apiSecretPtr) {
+    ACS_GenerateSignature: function (itemsJsonPtr, timestampPtr, noncePtr, apiSecretPtr) {
         let itemsJson = UTF8ToString(itemsJsonPtr);
+        let timestamp = parseInt(UTF8ToString(timestampPtr));
         let nonce = UTF8ToString(noncePtr);
         let apiSecret = UTF8ToString(apiSecretPtr);
-        let finalStr = itemsJson + timestamp + nonce;
 
-        console.log("✅ Nonce:", nonce);
-        console.log("✅ Items JSON:", itemsJson);
-        console.log("✅ API Secret:", apiSecret);
-        console.log("✅ Final String for Signature:", finalStr);
+        let items = JSON.parse(itemsJson);
 
-        let encoder = new TextEncoder();
-        let key = encoder.encode(apiSecret);
-        let msg = encoder.encode(finalStr);
-
-        crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"])
-            .then(hmacKey => crypto.subtle.sign("HMAC", hmacKey, msg))
+        ACSPlugin.generateSignature({ items, timestamp, nonce, apiSecret })
             .then(signature => {
-                let hexSig = Array.from(new Uint8Array(signature))
-                    .map(b => b.toString(16).padStart(2, '0'))
-                    .join('');
-
-                console.log("✅ Generated Signature:", hexSig);
-
-                // ✅ Send Signature to Unity
-                const unityGame = typeof unityInstance !== "undefined" ? unityInstance : window.UnityInstance;
-                if (unityGame) {
-                    unityGame.SendMessage("ACSManager", "ReceiveSignature", hexSig);
-                } else {
-                    console.error("❌ Unity instance not found!");
-                }
+                window.UnityInstance.SendMessage("ACSManager", "ReceiveSignature", signature);
             })
             .catch(err => console.error("❌ Error generating signature:", err));
     },
 
     ACS_SendRequest: function (noncePtr, signaturePtr, timestampPtr, bodyJsonPtr) {
-        console.log("🔹 Sending API Request...");
 
-        let nonce = UTF8ToString(noncePtr);
-        let signature = UTF8ToString(signaturePtr);
-        let timestamp = UTF8ToString(timestampPtr);
-        let bodyJson = UTF8ToString(bodyJsonPtr);
+    let nonce = UTF8ToString(noncePtr);
+    let signature = UTF8ToString(signaturePtr);
+    let timestamp = UTF8ToString(timestampPtr);
+    let bodyJson = UTF8ToString(bodyJsonPtr);
 
-        console.log("✅ Nonce:", nonce);
-        console.log("✅ Signature:", signature);
-        console.log("✅ Timestamp:", timestamp);
-        console.log("✅ Body JSON:", bodyJson);
+    let headers = {
+        "Content-Type": "application/json",
+        "x-timestamp": timestamp,
+        "x-nonce": nonce,
+        "x-signature": signature
+    };
 
-        let headers = new Headers({
-            "Content-Type": "application/json",
-            "x-timestamp": timestamp,
-            "x-nonce": nonce,
-            "x-signature": signature
-        });
+    fetch("https://test4.xzsean.eu.org/acs/addDiscretionaryPointsBatch", {
+        method: "POST",
+        headers: headers,
+        body: bodyJson
+    })
+    .then(response => {
+        console.log(`🔹 HTTP Status Code: ${response.status}`);
 
-        fetch("https://test4.xzsean.eu.org/acs/addDiscretionaryPointsBatch", {
-            method: "POST",
-            headers: headers,
-            body: bodyJson
-        })
-        .then(response => response.text().then(responseText => ({
-            responseText,
-            status: response.status
-        })))
-        .then(({ responseText, status }) => {
-            console.log(`✅ API Response [${status}]:`, responseText);
+        if (response.status === 201) {
+            console.log("Success! API returned 201 Created.");
+        } else if (response.status === 401) {
+            console.error("Unauthorized! API returned 401.");
+        } else {
+            console.warn(`Unexpected Status Code: ${response.status}`);
+        }
 
-            if (typeof UnityInstance !== "undefined" && UnityInstance !== null) {
-                UnityInstance.SendMessage("ACSManager", "OnACSResponse", JSON.stringify({
-                    status,
-                    response: responseText
-                }));
-            } else {
-                console.error("❌ UnityInstance not available.");
-            }
-        })
-        .catch(error => {
-            console.error("❌ API Request Error:", error);
+        return response.text(); // Read raw response first
+    })
+    .then(text => {
+        console.log("🔹 Raw API Response:", text);
+        return text ? JSON.parse(text) : {}; // Parse only if not empty
+    })
+    .then(data => {
 
-            if (typeof UnityInstance !== "undefined" && UnityInstance !== null) {
-                UnityInstance.SendMessage("ACSManager", "OnACSResponse", JSON.stringify({
-                    error: error.message
-                }));
-            }
-        });
-    }
+        if (typeof window.UnityInstance !== "undefined" && window.UnityInstance !== null) {
+            window.UnityInstance.SendMessage("ACSManager", "OnACSResponse", JSON.stringify({
+                status: response.status,
+                response: data
+            }));
+        } else {
+            console.error("❌ UnityInstance not available.");
+        }
+    })
+    .catch(error => {
+        console.error("❌ API Request Error:", error);
+
+        if (typeof window.UnityInstance !== "undefined" && window.UnityInstance !== null) {
+            window.UnityInstance.SendMessage("ACSManager", "OnACSResponse", JSON.stringify({
+                error: error.message
+            }));
+        }
+    });
+}
+
 });

@@ -90,10 +90,10 @@ public class Missions : MonoBehaviour
             Debug.Log("🔹 Claiming ACS Points...");
 
             var nonce = ACSManager.Instance.GenerateNonce();
-            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
             
             Debug.Log($"✅ Nonce: {nonce}");
-            Debug.Log($"✅ Timestamp: {timestamp}");
+            Debug.Log($"✅ Timestamp: {timestamp}");        
 
             string userAddress = ThirdwebManager.Instance.GetActiveWallet().GetAddress().Result;
             string description = "Test";
