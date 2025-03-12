@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using Thirdweb.Unity;
 using System.Threading.Tasks;
 
@@ -84,10 +85,24 @@ public class MissionsMenu : MonoBehaviour
 
     [SerializeField] Sprite claimButtonSprite;
     [SerializeField] Image claimButtonImg;
-    public void ClaimFinalReward() {
-        //Redirect user to claim ACS points on web url     
-        Application.OpenURL("https://www.metakraft.ai/start");   
-    }
+    public void ClaimFinalReward()
+        {
+            Debug.Log("🔹 Claiming ACS Points...");
+
+            var nonce = ACSManager.Instance.GenerateNonce();
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            
+            Debug.Log($"✅ Nonce: {nonce}");
+            Debug.Log($"✅ Timestamp: {timestamp}");        
+
+            string userAddress = ThirdwebManager.Instance.GetActiveWallet().GetAddress().Result;
+            string description = "Test";
+            string itemsJson = $"[{{\"userAddress\":\"{userAddress}\",\"defiId\":{ACSManager.Instance.defiID},\"acsAmount\":{ACSManager.Instance.acsAmountToTransfer},\"description\":\"{description}\"}}]";
+
+            // ✅ Call JavaScript to generate signature
+            ACSManager.Instance.GenerateSignature(itemsJson, timestamp, nonce);
+        }
+
 
 
     [SerializeField] GameObject bottomBarManager;

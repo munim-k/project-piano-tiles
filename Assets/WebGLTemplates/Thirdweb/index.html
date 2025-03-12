@@ -25,15 +25,9 @@
         </div>
     </div>
     <div id="unity-fullscreen-button" style="display: none"></div>
-
-    <!-- Unity Loader -->
-    <script src="Build/project piano tiles builds.loader.js"></script>
-
-    <script>
-      let unityInstance = null;
-
-        window.onload = function () {
-            const hideFullScreenButton = "";
+    <script type="module">
+      let UnityInstance = null;
+            const hideFullScreenButton = "{{{ HIDE_FULL_SCREEN_BUTTON }}}";
             const buildUrl = "Build";
             const config = {
                 dataUrl: buildUrl + "/project piano tiles builds.data",
