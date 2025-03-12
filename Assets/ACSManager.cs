@@ -90,6 +90,7 @@ namespace Thirdweb.Unity
 
         public void OnACSResponse(string jsonResponse)
         {
+            if(jsonResponse == null) return;
             ACSResponse responseObj = JsonUtility.FromJson<ACSResponse>(jsonResponse);
         }
     }

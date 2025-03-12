@@ -156,15 +156,11 @@ public class FirebaseMissionsMenu : MonoBehaviour
 
             var nonce = ACSManager.Instance.GenerateNonce();
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-            
-            Debug.Log($"✅ Nonce: {nonce}");
-            Debug.Log($"✅ Timestamp: {timestamp}");        
 
             string userAddress = ThirdwebManager.Instance.GetActiveWallet().GetAddress().Result;
             string description = "Test";
             string itemsJson = $"[{{\"userAddress\":\"{userAddress}\",\"defiId\":{ACSManager.Instance.defiID},\"acsAmount\":{ACSManager.Instance.acsAmountToTransfer},\"description\":\"{description}\"}}]";
 
-            // ✅ Call JavaScript to generate signature
             ACSManager.Instance.GenerateSignature(itemsJson, timestamp, nonce);    }
 
 
