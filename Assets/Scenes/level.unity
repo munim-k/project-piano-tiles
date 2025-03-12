@@ -1418,6 +1418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2011994417}
   - component: {fileID: 2011994418}
+  - component: {fileID: 2011994419}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1457,8 +1458,21 @@ MonoBehaviour:
   noteSpeed: 5
   noteContainer: {fileID: 473242142}
   audioSource: {fileID: 0}
-  bpm: 80
-  seed: 0
+  midiFile: {fileID: 0}
+  playAudioWaitTime: 0.5
+  bgTransform: {fileID: 14201282}
+--- !u!114 &2011994419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011994416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b7bd7d167ba06145ae02933f076efa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &488409528675880560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1592,6 +1606,14 @@ PrefabInstance:
       propertyPath: wonModal
       value: 
       objectReference: {fileID: 2395110409304816769}
+    - target: {fileID: 3137018731094627796, guid: 20630f4a2db65d933bd6d570abab0064, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2395110409304816769}
+    - target: {fileID: 3137018731094627796, guid: 20630f4a2db65d933bd6d570abab0064, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextLevel
+      objectReference: {fileID: 0}
     - target: {fileID: 3325301026678406315, guid: 20630f4a2db65d933bd6d570abab0064, type: 3}
       propertyPath: m_sharedMaterial
       value: 

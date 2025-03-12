@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 public class CurrencyManager : MonoBehaviour
 {
   
-    [SerializeField] int tokens;
-    [SerializeField] int stars;
+    int tokens;
+    int stars;
 
     [SerializeField] TMPro.TextMeshProUGUI tokenText;
     [SerializeField] TMPro.TextMeshProUGUI starText;

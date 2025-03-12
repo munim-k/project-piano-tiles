@@ -9,7 +9,7 @@ public class LostModal : MonoBehaviour
     public void Show(int score, int level)
     {
         pointsText.text = score.ToString();
-        levelText.text = "Level: 0" + level;
+        levelText.text = "Level: 0" + (level + 1);
     }
 
     public void Restart()
@@ -21,10 +21,10 @@ public class LostModal : MonoBehaviour
     public void Skip() {
         // TODO: Implement skip logic
 
-        if (CurrencyManager.Instance.GetGems() >= 10)
+        if (FirebaseCurrencyManager.Instance.GetStars() >= 10)
         {
-            CurrencyManager.Instance.RemoveGems(10);
-            LevelManager.Instance.levelsCompleted[LevelManager.Instance.level] = true;
+            FirebaseCurrencyManager.Instance.RemoveStars(10);
+            FirebaseLevelManager.Instance.CompleteLevel(FirebaseLevelManager.Instance.level);
             SceneManager.LoadScene("Start");
         }
         else

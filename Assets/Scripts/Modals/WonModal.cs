@@ -11,7 +11,7 @@ public class WonModal : MonoBehaviour
     {
         pointsText.text = "" + score;
         rewardsText.text = "" + rewards;
-        levelText.text = "Level: 0" + level;
+        levelText.text = "Level: 0" + (level + 1);
     }
 
     public void NextLevel()

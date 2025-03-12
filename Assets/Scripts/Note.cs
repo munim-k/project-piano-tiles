@@ -4,7 +4,7 @@ public class Note : MonoBehaviour
 {
     Animator animator;
 
-    private bool visible;
+    [SerializeField] private bool visible;
     public bool Visible
     {
         get => visible;
