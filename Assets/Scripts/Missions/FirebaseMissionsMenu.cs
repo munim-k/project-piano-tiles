@@ -5,6 +5,7 @@ using Thirdweb.Unity;
 using FirebaseWebGL.Examples.Utils;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 using FirebaseWebGL.Scripts.Objects;
+using System;
 
 namespace Thirdweb.Unity{
 public class FirebaseMissionsMenu : MonoBehaviour
@@ -143,8 +144,20 @@ public class FirebaseMissionsMenu : MonoBehaviour
         //claimButtons[5].Setup(claimed[4], FirebaseLevelManager.Instance.levelsCompleted[4], 4);
 
         SaveClaimedData();
-        Application.OpenURL("https://www.metakraft.ai/start");   
-    }
+            Debug.Log("🔹 Claiming ACS Points...");
+
+            var nonce = ACSManager.Instance.GenerateNonce();
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+            
+            Debug.Log($"✅ Nonce: {nonce}");
+            Debug.Log($"✅ Timestamp: {timestamp}");        
+
+            string userAddress = ThirdwebManager.Instance.GetActiveWallet().GetAddress().Result;
+            string description = "Test";
+            string itemsJson = $"[{{\"userAddress\":\"{userAddress}\",\"defiId\":{ACSManager.Instance.defiID},\"acsAmount\":{ACSManager.Instance.acsAmountToTransfer},\"description\":\"{description}\"}}]";
+
+            // ✅ Call JavaScript to generate signature
+            ACSManager.Instance.GenerateSignature(itemsJson, timestamp, nonce);    }
 
 
     [SerializeField] GameObject bottomBarManager;
