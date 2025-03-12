@@ -615,7 +615,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 396921297}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
         m_MethodName: testing
         m_Mode: 1
@@ -1123,7 +1123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2901311808482981223, guid: 2e71c822a3c7e4f969c787af2c4b88a0, type: 3}
       propertyPath: linkToMintWebsite
-      value: https://www.metakraft.ai/start
+      value: https://mint.metakraft.live/
       objectReference: {fileID: 0}
     - target: {fileID: 4232105625047789026, guid: 2e71c822a3c7e4f969c787af2c4b88a0, type: 3}
       propertyPath: m_IsActive
@@ -1312,7 +1312,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 396921298}
-  - component: {fileID: 396921297}
   - component: {fileID: 396921299}
   m_Layer: 0
   m_Name: LeveManager
@@ -1321,21 +1320,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &396921297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 396921296}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c599685941c20d4cabb81a22bed34c8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelsUnlocked: 010101010101
-  levelsCompleted: 010101010101
-  level: 0
 --- !u!4 &396921298
 Transform:
   m_ObjectHideFlags: 0
@@ -1363,7 +1347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91eab6e4fd8108eba5dacdbb9ca3ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelsUnlocked: 010101010101
+  levelsUnlocked: 000000000000
   levelsCompleted: 000000000000
   level: 0
 --- !u!114 &469432630 stripped
@@ -5662,6 +5646,10 @@ PrefabInstance:
     - target: {fileID: 8031347036670426564, guid: d7bfbd5d09b4814268247f78af38b2ab, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -731.9659
+      objectReference: {fileID: 0}
+    - target: {fileID: 8270800406686624583, guid: d7bfbd5d09b4814268247f78af38b2ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8623149401489644952, guid: d7bfbd5d09b4814268247f78af38b2ab, type: 3}
       propertyPath: m_AnchorMax.y

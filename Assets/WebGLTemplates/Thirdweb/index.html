@@ -10,6 +10,7 @@
     <title>Project Piano Tiles</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="acsplugin.js"></script>
 </head>
 <body class="dark">
     <div id="unity-container" class="unity-desktop">
@@ -25,59 +26,119 @@
         </div>
     </div>
     <div id="unity-fullscreen-button" style="display: none"></div>
+
+    <!-- Unity Loader -->
+    <script src="Build/project piano tiles builds.loader.js"></script>
+
     <script type="module">
-      let UnityInstance = null;
-            const hideFullScreenButton = "{{{ HIDE_FULL_SCREEN_BUTTON }}}";
-            const buildUrl = "Build";
-            const config = {
-                dataUrl: buildUrl + "/project piano tiles builds.data",
-                frameworkUrl: buildUrl + "/project piano tiles builds.framework.js",
-                codeUrl: buildUrl + "/project piano tiles builds.wasm",
-                streamingAssetsUrl: "StreamingAssets",
-                companyName: "DefaultCompany",
-                productName: "Project Piano Tiles",
-                productVersion: "1.0",
-            };
-
-            const container = document.querySelector("#unity-container");
-            const canvas = document.querySelector("#unity-canvas");
-            const loadingCover = document.querySelector("#loading-cover");
-            const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
-            const progressBarFull = document.querySelector("#unity-progress-bar-full");
-            const fullscreenButton = document.querySelector("#unity-fullscreen-button");
-            const spinner = document.querySelector('.spinner');
-
-            const canFullscreen = (function () {
-                return !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled);
-            })();
-
-            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                container.className = "unity-mobile";
-                config.devicePixelRatio = 1;
-            }
-
-            loadingCover.style.display = "";
-
-            createUnityInstance(canvas, config, (progress) => {
-                spinner.style.display = "none";
-                progressBarEmpty.style.display = "";
-                progressBarFull.style.width = `${100 * progress}%`;
-            }).then((unityInstance) => {
-                loadingCover.style.display = "none";
-                window.unityInstance = unityInstance;
-                if (canFullscreen) {
-                    if (!hideFullScreenButton) {
-                        fullscreenButton.style.display = "";
-                    }
-                    fullscreenButton.onclick = () => {
-                        document.documentElement.requestFullscreen();
-                    };
-                }
-            }).catch((message) => {
-                alert(message);
-            });
+        let UnityInstance = null; // ✅ Declare globally
+        let unityInstance = null;
+      
+        const hideFullScreenButton = "";
+        const buildUrl = "Build";
+        const loaderUrl = buildUrl + "/project piano tiles builds.loader.js";
+        const config = {
+          dataUrl: buildUrl + "/project piano tiles builds.data",
+          frameworkUrl: buildUrl + "/project piano tiles builds.framework.js",
+          codeUrl: buildUrl + "/project piano tiles builds.wasm",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "DefaultCompany",
+          productName: "project-piano-tiles",
+          productVersion: "1.0",
         };
-    </script>
+      
+        const container = document.querySelector("#unity-container");
+        const canvas = document.querySelector("#unity-canvas");
+        const loadingCover = document.querySelector("#loading-cover");
+        const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
+        const progressBarFull = document.querySelector("#unity-progress-bar-full");
+        const fullscreenButton = document.querySelector("#unity-fullscreen-button");
+        const spinner = document.querySelector('.spinner');
+      
+        const canFullscreen = (function() {
+          for (const key of [
+              'exitFullscreen',
+              'webkitExitFullscreen',
+              'webkitCancelFullScreen',
+              'mozCancelFullScreen',
+              'msExitFullscreen',
+            ]) {
+            if (key in document) {
+              return true;
+            }
+          }
+          return false;
+        }());
+      
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          container.className = "unity-mobile";
+          config.devicePixelRatio = 1;
+        }
+      
+        loadingCover.style.display = "";
+        const script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+          import('./lib/thirdweb-unity-bridge.js').then(module => {
+            createUnityInstance(canvas, config, (progress) => {
+              spinner.style.display = "none";
+              progressBarEmpty.style.display = "";
+              progressBarFull.style.width = `${100 * progress}%`;
+            }).then((instance) => {
+              loadingCover.style.display = "none";
+              window.UnityInstance = instance; // ✅ Set UnityInstance globally
+              window.unityInstance = instance;
+              console.log("✅ Unity Instance Loaded", UnityInstance);
+      
+              if (canFullscreen) {
+                if (!hideFullScreenButton) {
+                  fullscreenButton.style.display = "";
+                }
+                fullscreenButton.onclick = () => {
+                  document.makeFullscreen('unity-container');
+                };
+              }
+            }).catch((message) => {
+              alert(message);
+            });
+          });
+        };
+        document.body.appendChild(script);
+      
+        // ✅ Function to send signature to Unity
+        function ACS_GenerateSignature(itemsJson, timestamp, nonce, apiSecret) {
+          console.log("🔹 Generating Signature...");
+      
+          let finalStr = itemsJson + timestamp + nonce;
+          let encoder = new TextEncoder();
+          let key = encoder.encode(apiSecret);
+          let msg = encoder.encode(finalStr);
+      
+          crypto.subtle.importKey("raw", key, { name: "HMAC", hash: "SHA-256" }, false, ["sign"])
+            .then(hmacKey => crypto.subtle.sign("HMAC", hmacKey, msg))
+            .then(signature => {
+              let hexSig = Array.from(new Uint8Array(signature))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+      
+              console.log("✅ Generated Signature:", hexSig);
+      
+              // ✅ Wait for UnityInstance to be ready before calling SendMessage
+              if (UnityInstance) {
+                UnityInstance.SendMessage("ACSManager", "ReceiveSignature", hexSig);
+                console.log("✅ Sent signature to Unity!");
+              } else {
+                console.error("❌ UnityInstance is not ready! Retrying in 1 second...");
+                setTimeout(() => ACS_GenerateSignature(itemsJson, timestamp, nonce, apiSecret), 1000);
+              }
+            })
+            .catch(error => console.error("❌ Error generating signature:", error));
+        }
+      
+        // ✅ Make sure UnityInstance is globally accessible
+        window.UnityInstance = UnityInstance;
+        window.ACS_GenerateSignature = ACS_GenerateSignature;
+      </script>
 
     <!-- Firebase SDK -->
     <script type="module">
