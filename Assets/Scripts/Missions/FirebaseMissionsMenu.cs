@@ -10,6 +10,8 @@ using System;
 namespace Thirdweb.Unity{
 public class FirebaseMissionsMenu : MonoBehaviour
 {
+
+    public GameObject popup;
     string[] contracts = new string[6] {
         "Test",
         "Test",
@@ -27,7 +29,7 @@ public class FirebaseMissionsMenu : MonoBehaviour
 
     void Start() {
         //load karwa claimed etc firebase se
-
+        popup.SetActive(false);
         Debug.Log("FirebaseMissionsMenu Start");
         FirebaseDatabase.GetJSON($"users/{firebaseManager.idToken}", gameObject.name, nameof(HandleGetClaimed), null);
 
@@ -86,6 +88,8 @@ public class FirebaseMissionsMenu : MonoBehaviour
         claimButtons[0].Setup(claimed[0], FirebaseLevelManager.Instance.levelsCompleted[0], 0);
 
         SaveClaimedData();
+        popup.SetActive(true);
+
     }
 
     public async void ClaimLevel2(string addr) {
@@ -97,6 +101,7 @@ public class FirebaseMissionsMenu : MonoBehaviour
         claimButtons[1].Setup(claimed[1], FirebaseLevelManager.Instance.levelsCompleted[1], 1);
 
         SaveClaimedData();
+        popup.SetActive(true);
     }
 
     public async void ClaimLevel3(string addr) {
@@ -108,6 +113,7 @@ public class FirebaseMissionsMenu : MonoBehaviour
         claimButtons[2].Setup(claimed[2], FirebaseLevelManager.Instance.levelsCompleted[2], 2);
 
         SaveClaimedData();
+        popup.SetActive(true);
     }
 
     public async void ClaimLevel4(string addr) {
@@ -119,6 +125,7 @@ public class FirebaseMissionsMenu : MonoBehaviour
         claimButtons[3].Setup(claimed[3], FirebaseLevelManager.Instance.levelsCompleted[3], 3);
 
         SaveClaimedData();
+        popup.SetActive(true);
     }
 
     public async void ClaimLevel5(string addr) {
@@ -130,6 +137,7 @@ public class FirebaseMissionsMenu : MonoBehaviour
         claimButtons[4].Setup(claimed[4], FirebaseLevelManager.Instance.levelsCompleted[4], 4);
 
         SaveClaimedData();
+        popup.SetActive(true);
     }
 
     [SerializeField] Sprite claimButtonSprite;

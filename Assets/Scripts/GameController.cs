@@ -276,7 +276,7 @@ private int GetColumnFromMidiNote(int midiNoteNumber)
 
                 // Debug.Log($"isNearEnd: {isNearEnd}, hasStoppedPlaying: {hasStoppedPlaying}, allNotesPlayed: {allNotesPlayed}");
 
-                if ((isNearEnd || hasStoppedPlaying) && allNotesPlayed)
+                if ((isNearEnd || hasStoppedPlaying))
                 {
                     Debug.Log("Ending game with victory condition");
                     FirebaseCurrencyManager.Instance.AddTokens(Score.Value);
