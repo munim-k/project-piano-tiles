@@ -804,9 +804,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca68ed94ee93c4ffca2018a57bb5b627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acsAmountToTransfer: 10
+  acsAmountToTransfer: 1000
   defiID: 35
-  apiSecret: k9m2x7p4w1n8v5b3q6t0y3u7i4l2s9f6h
+  apiSecret: m3t2k5r1f4a7n0q3w6e9x2y5u8i1o4p7l0c3h6
   signature: 
   nonce: 
   timestamp: 
@@ -1277,5 +1277,4 @@ SceneRoots:
   - {fileID: 546228870}
   - {fileID: 994698737}
   - {fileID: 743062169}
-  - {fileID: 1964571405}
   - {fileID: 1442318266}
