@@ -38,7 +38,7 @@ mergeInto(LibraryManager.library, {
         "x-signature": signature
     };
 
-    fetch("https://test4.xzsean.eu.org/acs/addDiscretionaryPointsBatch", {
+    fetch("https://acs-api.astar.network/acs/addDiscretionaryPointsBatch", {
         method: "POST",
         headers: headers,
         body: bodyJson
