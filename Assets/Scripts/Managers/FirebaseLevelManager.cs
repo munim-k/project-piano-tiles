@@ -134,4 +134,8 @@ public class FirebaseLevelManager : MonoBehaviour
         Debug.LogError(error);
     }
 
+    public void onClickVisitDevs(){
+        Application.OpenURL("https://trinitystudios.dev/");
+    }
+
 }
